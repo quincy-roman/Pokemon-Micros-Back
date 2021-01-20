@@ -9,10 +9,10 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.pokemaster</groupId>
-	<artifactId>Pokemon-Microservices</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
-	<name>Pokemon-Microservices</name>
-	<description>Pokemon microservice project.</description>
+	<artifactId>Pokemon-Microservices-Gacha</artifactId>
+	<version>0.0.1</version>
+	<name>Pokemon-Microservices-Gacha</name>
+	<description>Gacha microservice for the pokesite. </description>
 	<properties>
 		<java.version>1.8</java.version>
 		<spring-cloud.version>Hoxton.SR9</spring-cloud.version>
