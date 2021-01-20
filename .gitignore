@@ -1,1 +1,7 @@
 /.metadata/
+battle-sim-service/.settings/
+gateway-service/.settings/
+login-service/.settings/
+pc-service/.settings/
+pokemart-service/.settings/
+pokecenter-service/.settings/
