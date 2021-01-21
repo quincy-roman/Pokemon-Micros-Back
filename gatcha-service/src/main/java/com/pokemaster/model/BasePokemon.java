@@ -52,6 +52,8 @@ public class BasePokemon {
 	@Column(name = "is_evolution")
 	private final boolean IS_EVOLUTION; //If a pokemon is an evolved form or not. Affects if it can be rolled in drop table.
 	
+	@Column(name = "evolution")
+	private final String EVOLUTION;
 	public BasePokemon()
 	{
 		super();
@@ -68,10 +70,11 @@ public class BasePokemon {
 		SPD = 0;
 		this.rarity = Rarity.COMMON;
 		IS_EVOLUTION= false;
+		EVOLUTION = "";
 	}
 	
 	public BasePokemon(int nationalId, String sPECIES, Type tYPE_ONE, Type tYPE_TWO, String aBILITY, int mAX_HP, int aTK,
-			int dEF, int sPATK, int sPDEF, int sPD, Rarity rarity,boolean iS_EVOLUTION) {
+			int dEF, int sPATK, int sPDEF, int sPD, Rarity rarity,boolean iS_EVOLUTION,String eVOLUTION) {
 		super();
 		this.nationalId = nationalId;
 		SPECIES = sPECIES;
@@ -86,6 +89,7 @@ public class BasePokemon {
 		SPD = sPD;
 		this.rarity = rarity;
 		IS_EVOLUTION= iS_EVOLUTION;
+		EVOLUTION = eVOLUTION;
 	}
 	
 	// Future functionality here.

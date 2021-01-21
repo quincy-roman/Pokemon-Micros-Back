@@ -15,8 +15,7 @@ public interface GachaService {
 	public float LEGENDARY_DROP_RATE = 1.8f;
 	public float MYTHIC_DROP_RATE = 0.4f;
 	
-	//Should be the value of total pokemon implemented - 1. This is the MAX value of the rollGacha RNG logic.
-	public int TOTAL_IMPLEMENTED_POKEMON = 150;
+	
 	
 	public List<BasePokemon> rollGacha(int numOfRolls); //Generic "random" rolls
 	
