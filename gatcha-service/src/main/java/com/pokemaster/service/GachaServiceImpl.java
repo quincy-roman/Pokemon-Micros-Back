@@ -13,7 +13,7 @@ import com.pokemaster.model.Rarity;
 import com.pokemaster.model.Trainer;
 import com.pokemaster.repository.BasePokemonRepository;
 
-@Service
+@Service("gachaService")
 public class GachaServiceImpl implements GachaService {
 
 	private static Logger log = Logger.getLogger(GachaServiceImpl.class);
@@ -77,8 +77,9 @@ public class GachaServiceImpl implements GachaService {
 	public BasePokemon getRandomPokemon(Rarity rarity) {
 		//Get all pokemon
 		List<BasePokemon> foundPokemon = basePokeRepo.findByRarity(rarity);
-		
-		int rand = 1 + (int) Math.random() * (foundPokemon.size() - 1);
+		log.info("Size of foundPokemon is: " +foundPokemon.size());
+		int rand = (int) (Math.random() * (foundPokemon.size() - 1));
+		log.info("Random value is: " + rand);
 		return foundPokemon.get(rand);
 	}
 
