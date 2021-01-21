@@ -21,6 +21,10 @@ public class GachaServiceImpl implements GachaService {
 	@Autowired
 	BasePokemonRepository basePokeRepo;
 
+	/***
+	 * Returns a list of {@link BasePokemon} that is comprised of random pokemon
+	 * Length of the list is the same as the numOfRolls 
+	 */
 	@Override
 	public List<BasePokemon> rollGacha(int numOfRolls) {
 
@@ -57,6 +61,9 @@ public class GachaServiceImpl implements GachaService {
 		return null;
 	}
 
+	/***
+	 * Returns {@link Rarity} based on the provided double.
+	 */
 	@Override
 	public Rarity evaluateRoll(double roll) {
 		if (roll <= MYTHIC_DROP_RATE) {
@@ -73,6 +80,9 @@ public class GachaServiceImpl implements GachaService {
 		}
 	}
 
+	/***
+	 * Returns a random {@link BasePokemon} from the specified rarity
+	 */
 	@Override
 	public BasePokemon getRandomPokemon(Rarity rarity) {
 		//Get all pokemon
