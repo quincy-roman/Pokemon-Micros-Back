@@ -1,17 +1,19 @@
 package com.pokemaster.model;
 
-public class ClientMessage {
+public class ClientMessage<T> {
 
-	String message;
+	T object;
 	
-	public ClientMessage(String message)
+	public ClientMessage( T object)
 	{
-		this.message = message;
+		
+		this.object = object;
 	}
+			
 	
-	public String getMessage()
+	public T getObjects()
 	{
-		return message;
+		return object;
 	}
 	
 }
