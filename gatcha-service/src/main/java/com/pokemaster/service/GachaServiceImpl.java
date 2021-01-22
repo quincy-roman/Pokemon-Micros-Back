@@ -11,7 +11,6 @@ import com.pokemaster.model.BasePokemon;
 import com.pokemaster.model.OwnedPokemon;
 import com.pokemaster.model.Rarity;
 import com.pokemaster.model.Trainer;
-import com.pokemaster.repository.BasePokemonRepository;
 
 @Service("gachaService")
 public class GachaServiceImpl implements GachaService {
@@ -19,7 +18,10 @@ public class GachaServiceImpl implements GachaService {
 	private static Logger log = Logger.getLogger(GachaServiceImpl.class);
 
 	@Autowired
-	BasePokemonRepository basePokeRepo;
+	BasePokemonService basePokeServ;
+	
+	@Autowired
+	OwnedPokemonService ownedServ;
 
 	/***
 	 * Returns a list of {@link BasePokemon} that is comprised of random pokemon
@@ -68,7 +70,7 @@ public class GachaServiceImpl implements GachaService {
 	@Override
 	public BasePokemon getRandomPokemon(Rarity rarity) {
 		//Get all pokemon
-		List<BasePokemon> foundPokemon = basePokeRepo.findByRarity(rarity);
+		List<BasePokemon> foundPokemon = basePokeServ.findWithRarity(rarity);
 		log.info("Size of foundPokemon is: " +foundPokemon.size());
 		int rand = (int) (Math.random() * (foundPokemon.size() - 1));
 		log.info("Random value is: " + rand);
@@ -79,7 +81,20 @@ public class GachaServiceImpl implements GachaService {
 	@Override
 	public List<OwnedPokemon> assignGacha(Trainer trainer, int numOfRolls) {
 		// TODO Auto-generated method stub
-		return null;
+		
+		
+		
+		List<BasePokemon> rolledPoke = rollGacha(numOfRolls);
+		List<OwnedPokemon> ownedPoke = new ArrayList<>();
+		for(BasePokemon p : rolledPoke) {
+			//Convert BasePokemon to a new owned Pokemon
+			ownedPoke.add(new OwnedPokemon(0,p.getSPECIES(),"",trainer,trainer,p.getTYPE_ONE(),p.getTYPE_TWO()
+					,p.getABILITY(),null,p.getMAX_HP(),p.getMAX_HP()
+					,p.getATK(),p.getDEF(),p.getSPATK(),p.getSPDEF()
+					,p.getSPD(),p.getRarity(),false,false ));
+		}
+		
+		return ownedServ.saveAll(ownedPoke);
 	}
 
 	@Override
@@ -88,10 +103,8 @@ public class GachaServiceImpl implements GachaService {
 		return null;
 	}
 
-	@Override
-	public List<BasePokemon> rollWeightedGatcha(int numOfRolls, Rarity guaranteedRarity) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+
+
+
 	
 }

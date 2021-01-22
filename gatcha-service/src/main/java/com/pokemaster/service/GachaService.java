@@ -23,11 +23,13 @@ public interface GachaService {
 	
 	public List<BasePokemon> rollStarterGacha(); //Rolls the starting 6 pokemon a trainer gets when they first register
 	
-	public List<BasePokemon> rollWeightedGatcha(int numOfRolls, Rarity guaranteedRarity); //Rolls a set of rolls with at least 1 matching the guaranteed rarity.
 	
 	//Evaluates the roll based on drop rates and returns a specified rarity.
 	public Rarity evaluateRoll(double roll);
 	
 	public BasePokemon getRandomPokemon(Rarity rarity);
+	
+	
+	
 	
 }
