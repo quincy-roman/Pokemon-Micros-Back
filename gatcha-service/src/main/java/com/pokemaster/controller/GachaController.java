@@ -40,7 +40,7 @@ public class GachaController {
 	 * @return
 	 */
 	@PostMapping("/populate")
-	public ResponseEntity<ClientMessage> populateDatabase(@RequestBody List<PokemonDTO> pokemon)
+	public ResponseEntity<ClientMessage<String>> populateDatabase(@RequestBody List<PokemonDTO> pokemon)
 	{
 		List<BasePokemon> convertedPoke = new ArrayList<>();
 		for(PokemonDTO p : pokemon)
@@ -49,8 +49,8 @@ public class GachaController {
 		}
 		
 		basePokeServ.saveAll(convertedPoke);
-		ResponseEntity<ClientMessage> ret;
-		ClientMessage m = new ClientMessage("Data saved to database");
+		ResponseEntity<ClientMessage<String>> ret;
+		ClientMessage<String> m = new ClientMessage<String>("Data saved to database");
 		ret = ResponseEntity.ok(m);
 		return ret;
 		
@@ -64,7 +64,7 @@ public class GachaController {
 	 * @return
 	 */
 	@PostMapping("/roll")
-	public ResponseEntity<OwnedPokemon[]> rollGacha(@RequestBody Trainer trainer, @RequestBody int numOfRolls)
+	public ResponseEntity<ClientMessage<OwnedPokemon[]>> rollGacha(@RequestBody Trainer trainer, @RequestBody int numOfRolls)
 	{
 		//Check if the trainer has enough money to do the rolls
 		if(trainer.getPoke() >= (COST_PER_ROLL*numOfRolls))
@@ -75,8 +75,9 @@ public class GachaController {
 			OwnedPokemon[] newPokes = (OwnedPokemon[]) gachaServ.assignGacha(trainer, numOfRolls).toArray();
 			
 			//Return pokemon to the client
-			ResponseEntity<OwnedPokemon[]> ret;
-			ret = ResponseEntity.ok(newPokes);
+			ResponseEntity<ClientMessage<OwnedPokemon[]>> ret;
+			ClientMessage<OwnedPokemon[]> message = new ClientMessage<OwnedPokemon[]>("Rolls complete", newPokes);
+			ret = ResponseEntity.ok(message);
 			return ret;
 		}
 		else {
