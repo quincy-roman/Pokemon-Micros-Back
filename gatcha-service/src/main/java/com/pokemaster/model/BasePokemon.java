@@ -49,8 +49,32 @@ public class BasePokemon {
 	@Column(name = "rarity", nullable = false)
 	private final Rarity rarity;	// The rarity of the Pokemon in the gacha mechanic.
 	
+	@Column(name = "is_evolution")
+	private final boolean IS_EVOLUTION; //If a pokemon is an evolved form or not. Affects if it can be rolled in drop table.
+	
+	@Column(name = "evolution")
+	private final String EVOLUTION;
+	public BasePokemon()
+	{
+		super();
+		this.nationalId = 0;
+		SPECIES = "";
+		TYPE_ONE = Type.NONE;
+		TYPE_TWO = Type.NONE;
+		ABILITY = "";
+		MAX_HP = 0;
+		ATK = 0;
+		DEF = 0;
+		SPATK = 0;
+		SPDEF = 0;
+		SPD = 0;
+		this.rarity = Rarity.COMMON;
+		IS_EVOLUTION= false;
+		EVOLUTION = "";
+	}
+	
 	public BasePokemon(int nationalId, String sPECIES, Type tYPE_ONE, Type tYPE_TWO, String aBILITY, int mAX_HP, int aTK,
-			int dEF, int sPATK, int sPDEF, int sPD, Rarity rarity) {
+			int dEF, int sPATK, int sPDEF, int sPD, Rarity rarity,boolean iS_EVOLUTION,String eVOLUTION) {
 		super();
 		this.nationalId = nationalId;
 		SPECIES = sPECIES;
@@ -64,6 +88,8 @@ public class BasePokemon {
 		SPDEF = sPDEF;
 		SPD = sPD;
 		this.rarity = rarity;
+		IS_EVOLUTION= iS_EVOLUTION;
+		EVOLUTION = eVOLUTION;
 	}
 	
 	// Future functionality here.
