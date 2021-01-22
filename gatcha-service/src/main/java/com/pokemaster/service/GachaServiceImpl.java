@@ -43,24 +43,6 @@ public class GachaServiceImpl implements GachaService {
 		return rolledPokes;
 	}
 
-	@Override
-	public List<OwnedPokemon> assignGacha(Trainer trainer, int numOfRolls) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public List<BasePokemon> rollStarterGacha() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public List<BasePokemon> rollWeightedGatcha(int numOfRolls, Rarity guaranteedRarity) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
 	/***
 	 * Returns {@link Rarity} based on the provided double.
 	 */
@@ -93,4 +75,23 @@ public class GachaServiceImpl implements GachaService {
 		return foundPokemon.get(rand);
 	}
 
+	
+	@Override
+	public List<OwnedPokemon> assignGacha(Trainer trainer, int numOfRolls) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<BasePokemon> rollStarterGacha() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<BasePokemon> rollWeightedGatcha(int numOfRolls, Rarity guaranteedRarity) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
 }
