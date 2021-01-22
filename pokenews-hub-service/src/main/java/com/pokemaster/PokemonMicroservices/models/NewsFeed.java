@@ -1,11 +1,14 @@
 /**
-* The NewsFeed model represents a single, general news title for the NewsHub microservice. 
+* The NewsFeed model represents a single, general news title 
+* for the NewsHub micro service. 
 * 
-* NOTE: do not know if package folder structure is the same as gatcha - cause weird error below
 * @author Azhya Knox
-// package main.java.com.pokemaster.PokemonMicroservices.models;
 */
 
+package com.pokemaster.PokemonMicroservices.models;
+
+import java.time.LocalDate;
+import java.util.Arrays;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -16,19 +19,19 @@ import javax.persistence.Table;
 import lombok.Data;
 
 @Entity
-@Table(name = "news-feed")
+@Table(name = "NEWS")
 @Data
 public class NewsFeed{
 
     @Id
     @Column(name = "newsId")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int newsId; //DB-given value to track article in microservice
+    private int newsId; //DB-given value to track article in micro service
 
     @Column(name = "newsTitle")
     private String title; // main title of article
 
-    @Column(name = "newsId")
+    @Column(name = "newsType")
     private NewsType type; // enum that represents the type of article
 
     @Column(name = "author")
@@ -42,4 +45,154 @@ public class NewsFeed{
 
     @Column(name = "newsKeywords")
     private String[] keywords; //key words for easily search item on external browser
+    
+    //CONSTRUCTORS
+    
+    //NO ARGS
+    public NewsFeed() {
+		// TODO Auto-generated constructor stub
+	}
+
+    //ALL BUT ID FIELD
+	public NewsFeed(String title, NewsType type, String author, LocalDate dateWritten, String link, String[] keywords) {
+		super();
+		this.title = title;
+		this.type = type;
+		this.author = author;
+		this.dateWritten = dateWritten;
+		this.link = link;
+		this.keywords = keywords;
+	}
+
+	//ALL ARGS
+	public NewsFeed(int newsId, String title, NewsType type, String author, LocalDate dateWritten, String link,
+			String[] keywords) {
+		super();
+		this.newsId = newsId;
+		this.title = title;
+		this.type = type;
+		this.author = author;
+		this.dateWritten = dateWritten;
+		this.link = link;
+		this.keywords = keywords;
+	}
+	
+	//GETTERS & SETTERS
+
+	public int getNewsId() {
+		return newsId;
+	}
+
+	public void setNewsId(int newsId) {
+		this.newsId = newsId;
+	}
+
+	public String getTitle() {
+		return title;
+	}
+
+	public void setTitle(String title) {
+		this.title = title;
+	}
+
+	public NewsType getType() {
+		return type;
+	}
+
+	public void setType(NewsType type) {
+		this.type = type;
+	}
+
+	public String getAuthor() {
+		return author;
+	}
+
+	public void setAuthor(String author) {
+		this.author = author;
+	}
+
+	public LocalDate getDateWritten() {
+		return dateWritten;
+	}
+
+	public void setDateWritten(LocalDate dateWritten) {
+		this.dateWritten = dateWritten;
+	}
+
+	public String getLink() {
+		return link;
+	}
+
+	public void setLink(String link) {
+		this.link = link;
+	}
+
+	public String[] getKeywords() {
+		return keywords;
+	}
+
+	public void setKeywords(String[] keywords) {
+		this.keywords = keywords;
+	}
+	
+	//HASHCODE METHOD
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((author == null) ? 0 : author.hashCode());
+		result = prime * result + ((dateWritten == null) ? 0 : dateWritten.hashCode());
+		result = prime * result + Arrays.hashCode(keywords);
+		result = prime * result + ((link == null) ? 0 : link.hashCode());
+		result = prime * result + newsId;
+		result = prime * result + ((title == null) ? 0 : title.hashCode());
+		result = prime * result + ((type == null) ? 0 : type.hashCode());
+		return result;
+	}
+
+	//EQUALS METHOD
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		NewsFeed other = (NewsFeed) obj;
+		if (author == null) {
+			if (other.author != null)
+				return false;
+		} else if (!author.equals(other.author))
+			return false;
+		if (dateWritten == null) {
+			if (other.dateWritten != null)
+				return false;
+		} else if (!dateWritten.equals(other.dateWritten))
+			return false;
+		if (!Arrays.equals(keywords, other.keywords))
+			return false;
+		if (link == null) {
+			if (other.link != null)
+				return false;
+		} else if (!link.equals(other.link))
+			return false;
+		if (newsId != other.newsId)
+			return false;
+		if (title == null) {
+			if (other.title != null)
+				return false;
+		} else if (!title.equals(other.title))
+			return false;
+		if (type != other.type)
+			return false;
+		return true;
+	}
+
+	//TOSTRING METHOD
+	@Override
+	public String toString() {
+		return "NewsFeed [newsId=" + newsId + ", title=" + title + ", type=" + type + ", author=" + author
+				+ ", dateWritten=" + dateWritten + ", link=" + link + ", keywords=" + Arrays.toString(keywords) + "]";
+	}
 }
