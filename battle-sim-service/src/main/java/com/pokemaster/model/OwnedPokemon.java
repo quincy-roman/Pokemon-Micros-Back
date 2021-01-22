@@ -2,12 +2,9 @@ package com.pokemaster.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import lombok.Data;
@@ -28,12 +25,10 @@ public class OwnedPokemon {
 	@Column(name = "nickname")
 	private String nickname;	// A given nickname. Can be changed by the trainer.
 	
-	@ManyToOne(fetch= FetchType.EAGER)
-	@JoinColumn(name = "ot", nullable = false)
+	@Column(name = "ot", nullable = false)
 	private final Trainer OT;	// Original Trainer: the original owner of this Pokemon.
 	
-	@ManyToOne(fetch= FetchType.EAGER)
-	@JoinColumn(name = "current_trainer", nullable = false)
+	@Column(name = "current_trainer", nullable = false)
 	private Trainer currentTrainer;	// The current trainer of this Pokemon.
 	
 	@Column(name = "type_one", nullable = false)
@@ -80,6 +75,9 @@ public class OwnedPokemon {
 	
 	@Column(name = "in_battle", nullable = false, columnDefinition = "boolean default false")
 	private boolean inBattle;
+	
+//	@Column(name = "held_item")	Maybe in a later version.
+//	private Item heldItem;
 	
 	// TODO: Moves will need to be implemented.
 
