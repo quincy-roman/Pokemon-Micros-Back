@@ -76,7 +76,7 @@ public class GachaController {
 			
 			//Return pokemon to the client
 			ResponseEntity<ClientMessage<OwnedPokemon[]>> ret;
-			ClientMessage<OwnedPokemon[]> message = new ClientMessage<OwnedPokemon[]>("Rolls complete", newPokes);
+			ClientMessage<OwnedPokemon[]> message = new ClientMessage<OwnedPokemon[]>(newPokes);
 			ret = ResponseEntity.ok(message);
 			return ret;
 		}
