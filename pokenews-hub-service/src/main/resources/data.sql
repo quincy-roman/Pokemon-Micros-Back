@@ -1,0 +1,1 @@
+INSERT INTO NEWS VALUES (1, 'Breaking News!', 'GENERAL', 'A.A. Knox','2021-01-18', 'http://google.com', null);
