@@ -9,7 +9,7 @@ import com.pokemaster.PokemonMicroservices.repositories.NewsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-@Service("newsService")
+@Service
 public class NewsServiceImpl implements NewsService {
 	
 	@Autowired

@@ -32,7 +32,7 @@ public class NewsFeed{
     private String title; // main title of article
 
     @Column(name = "newsType")
-    private NewsType type; // enum that represents the type of article
+    private String type; // enum that represents the type of article -- testing with String
 
     @Column(name = "author")
     private String author; //person that wrote or provided source
@@ -54,7 +54,7 @@ public class NewsFeed{
 	}
 
     //ALL BUT ID FIELD
-	public NewsFeed(String title, NewsType type, String author, LocalDate dateWritten, String link, String[] keywords) {
+	public NewsFeed(String title, String type, String author, LocalDate dateWritten, String link, String[] keywords) {
 		super();
 		this.title = title;
 		this.type = type;
@@ -65,7 +65,7 @@ public class NewsFeed{
 	}
 
 	//ALL ARGS
-	public NewsFeed(int newsId, String title, NewsType type, String author, LocalDate dateWritten, String link,
+	public NewsFeed(int newsId, String title, String type, String author, LocalDate dateWritten, String link,
 			String[] keywords) {
 		super();
 		this.newsId = newsId;
@@ -95,11 +95,11 @@ public class NewsFeed{
 		this.title = title;
 	}
 
-	public NewsType getType() {
+	public String getType() {
 		return type;
 	}
 
-	public void setType(NewsType type) {
+	public void setType(String type) {
 		this.type = type;
 	}
 
@@ -134,7 +134,14 @@ public class NewsFeed{
 	public void setKeywords(String[] keywords) {
 		this.keywords = keywords;
 	}
-	
+
+	//TOSTRING METHOD
+	@Override
+	public String toString() {
+		return "NewsFeed [newsId=" + newsId + ", title=" + title + ", type=" + type + ", author=" + author
+				+ ", dateWritten=" + dateWritten + ", link=" + link + ", keywords=" + Arrays.toString(keywords) + "]";
+	}
+
 	//HASHCODE METHOD
 	@Override
 	public int hashCode() {
@@ -184,15 +191,11 @@ public class NewsFeed{
 				return false;
 		} else if (!title.equals(other.title))
 			return false;
-		if (type != other.type)
+		if (type == null) {
+			if (other.type != null)
+				return false;
+		} else if (!type.equals(other.type))
 			return false;
 		return true;
-	}
-
-	//TOSTRING METHOD
-	@Override
-	public String toString() {
-		return "NewsFeed [newsId=" + newsId + ", title=" + title + ", type=" + type + ", author=" + author
-				+ ", dateWritten=" + dateWritten + ", link=" + link + ", keywords=" + Arrays.toString(keywords) + "]";
 	}
 }
