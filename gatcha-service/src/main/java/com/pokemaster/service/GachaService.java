@@ -29,6 +29,8 @@ public interface GachaService {
 	
 	public BasePokemon getRandomPokemon(Rarity rarity);
 	
+	public void populateBasePokemonDatabase();
+	
 	
 	
 	

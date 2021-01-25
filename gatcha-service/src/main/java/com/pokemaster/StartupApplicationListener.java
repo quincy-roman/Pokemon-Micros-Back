@@ -26,7 +26,8 @@ public class StartupApplicationListener implements ApplicationListener<ContextRe
 	@Override
 	public void onApplicationEvent(ContextRefreshedEvent event) {
 			
-	
+	//USED TO AUTOPOPULATE DATABASE WITH POKEMON. USE ONLY WHEN THE DATABASE IS PURGED OR BAD THINGS WILL HAPPEN!!!!!!
+	//gachaServ.populateBasePokemonDatabase();
 		
 		
 		List<BasePokemon> poke = repo.findAll();
