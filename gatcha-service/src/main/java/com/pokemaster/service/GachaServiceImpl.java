@@ -1,5 +1,9 @@
 package com.pokemaster.service;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -7,6 +11,9 @@ import org.jboss.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.pokemaster.dto.PokemonDTO;
 import com.pokemaster.model.BasePokemon;
 import com.pokemaster.model.OwnedPokemon;
 import com.pokemaster.model.Rarity;
@@ -98,6 +105,70 @@ public class GachaServiceImpl implements GachaService {
 	public List<BasePokemon> rollStarterGacha() {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public void populateBasePokemonDatabase() {
+		//Open file for reading
+		File file = new File(this.getClass().getClassLoader().getResource("Poke.txt").getFile());
+		BufferedReader br = null;
+		try
+		{
+			//Read file, and store to string builder
+			br = new BufferedReader(new FileReader(file));
+			String line;
+			StringBuilder sb = new StringBuilder();
+			List<PokemonDTO> list = new ArrayList<>();
+			while((line = br.readLine()) !=null)
+			{
+				//Appends for debugging.
+				sb.append(line);
+				
+				ObjectMapper mapper = new ObjectMapper();
+				list.add(mapper.readValue(line,PokemonDTO.class)) ;
+
+				
+				
+			}
+			log.info(sb.toString());
+			//Parse string builder with Jackson
+			
+			List<BasePokemon> list2 = new ArrayList<>();
+			for(PokemonDTO poke : list)
+			{
+				list2.add(poke.convertToBasePokemon());
+			}
+			
+			basePokeServ.saveAll(list2);
+			
+			log.info("Saved all pokemon to DB");
+			
+		}catch(IOException ioE)
+		{
+			ioE.printStackTrace();
+		}catch(Exception e)
+		{
+			e.printStackTrace();
+		}finally
+		{
+			if(br !=null)
+			{
+				try {
+					br.close();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			
+			
+			
+		}
+		
+		
+		
+		
+		
 	}
 
 

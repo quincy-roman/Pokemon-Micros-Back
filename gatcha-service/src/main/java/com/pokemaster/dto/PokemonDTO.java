@@ -1,5 +1,7 @@
 package com.pokemaster.dto;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.pokemaster.model.BasePokemon;
 import com.pokemaster.model.Rarity;
 import com.pokemaster.model.Type;
@@ -9,7 +11,7 @@ import lombok.Data;
 @Data
 public class PokemonDTO {
 
-	private int nationalId;
+	private int national_id;
 
 	private final String SPECIES; // Species name.
 
@@ -40,30 +42,30 @@ public class PokemonDTO {
 
 	private final String DEX_ENTRY;
 
-	public PokemonDTO()
-	{
-		super();
-		this.nationalId = 0;
-		SPECIES = "";
-		TYPE_ONE = "";
-		TYPE_TWO = "";
-		ABILITY = "";
-		MAX_HP = 0;
-		ATK = 0;
-		DEF = 0;
-		SPATK = 0;
-		SPDEF = 0;
-		SPD = 0;
-		this.rarity = 0;
-		IS_EVOLUTION= false;
-		EVOLUTION = "";
-		DEX_ENTRY = "";
-	}
+//	public PokemonDTO()
+//	{
+//		super();
+//		this.national_id = 0;
+//		SPECIES = "";
+//		TYPE_ONE = "";
+//		TYPE_TWO = "";
+//		ABILITY = "";
+//		MAX_HP = 0;
+//		ATK = 0;
+//		DEF = 0;
+//		SPATK = 0;
+//		SPDEF = 0;
+//		SPD = 0;
+//		this.rarity = 0;
+//		IS_EVOLUTION= false;
+//		EVOLUTION = "";
+//		DEX_ENTRY = "";
+//	}
 
-	public PokemonDTO(int nationalId, String sPECIES, String tYPE_ONE, String tYPE_TWO, String aBILITY, int mAX_HP,
+	public PokemonDTO(int national_id, String sPECIES, String tYPE_ONE, String tYPE_TWO, String aBILITY, int mAX_HP,
 			int aTK, int dEF, int sPATK, int sPDEF, int sPD, String eVOLUTION, String dEX_ENTRY) {
 		super();
-		this.nationalId = nationalId;
+		this.national_id = national_id;
 		SPECIES = sPECIES;
 		TYPE_ONE = tYPE_ONE;
 		TYPE_TWO = tYPE_TWO;
@@ -84,11 +86,42 @@ public class PokemonDTO {
 		}
 		DEX_ENTRY = dEX_ENTRY;
 	}
+	
+	@JsonCreator
+	public PokemonDTO(@JsonProperty("national_id") int national_id,
+			@JsonProperty("species") String species,@JsonProperty("stats") int[] stats, 
+			@JsonProperty("type_one") String type_one,@JsonProperty("type_two") String type_two,
+			@JsonProperty("ability") String ability,@JsonProperty("pre-evolution") String preevolution,
+			@JsonProperty("dex entry") String dex_entry) {
+		super();
+		this.national_id = national_id;
+		SPECIES = species;
+		TYPE_ONE = type_one;
+		TYPE_TWO = type_two;
+		ABILITY = ability;
+		MAX_HP = stats[0];
+		ATK = stats[1];
+		DEF = stats[2];
+		SPATK = stats[3];
+		SPDEF = stats[4];
+		SPD = stats[5];
+		this.rarity = 0;
+		EVOLUTION = preevolution;
+		if (!preevolution.equals("")) {
+			IS_EVOLUTION = true;
+
+		} else {
+			IS_EVOLUTION = false;
+		}
+		DEX_ENTRY = dex_entry;
+	}
+	
+	
 
 	public BasePokemon convertToBasePokemon() {
 		float avg = (MAX_HP + ATK + DEF + SPATK + SPDEF + SPD) / 6;
 
-		return new BasePokemon(nationalId, SPECIES, Type.getType(TYPE_ONE), Type.getType(TYPE_TWO), ABILITY, MAX_HP,
+		return new BasePokemon(national_id, SPECIES, Type.getType(TYPE_ONE), Type.getType(TYPE_TWO), ABILITY, MAX_HP,
 				ATK, DEF, SPATK, SPDEF, SPD, Rarity.getRarityfromAvg(avg), IS_EVOLUTION, EVOLUTION,DEX_ENTRY);
 
 	}
