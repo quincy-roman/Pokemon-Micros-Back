@@ -80,10 +80,7 @@ public class GachaServiceImpl implements GachaService {
 	
 	@Override
 	public List<OwnedPokemon> assignGacha(Trainer trainer, int numOfRolls) {
-		// TODO Auto-generated method stub
-		
-		
-		
+		// TODO Auto-generated method stub		
 		List<BasePokemon> rolledPoke = rollGacha(numOfRolls);
 		List<OwnedPokemon> ownedPoke = new ArrayList<>();
 		for(BasePokemon p : rolledPoke) {

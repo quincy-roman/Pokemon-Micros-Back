@@ -54,6 +54,10 @@ public class BasePokemon {
 	
 	@Column(name = "evolution")
 	private final String EVOLUTION;
+	
+	@Column(name = "dex_entry")
+	private final String DEX_ENTRY;
+	
 	public BasePokemon()
 	{
 		super();
@@ -71,10 +75,11 @@ public class BasePokemon {
 		this.rarity = Rarity.COMMON;
 		IS_EVOLUTION= false;
 		EVOLUTION = "";
+		DEX_ENTRY="";
 	}
 	
 	public BasePokemon(int nationalId, String sPECIES, Type tYPE_ONE, Type tYPE_TWO, String aBILITY, int mAX_HP, int aTK,
-			int dEF, int sPATK, int sPDEF, int sPD, Rarity rarity,boolean iS_EVOLUTION,String eVOLUTION) {
+			int dEF, int sPATK, int sPDEF, int sPD, Rarity rarity,boolean iS_EVOLUTION,String eVOLUTION,String dEX_ENTRY) {
 		super();
 		this.nationalId = nationalId;
 		SPECIES = sPECIES;
@@ -90,6 +95,7 @@ public class BasePokemon {
 		this.rarity = rarity;
 		IS_EVOLUTION= iS_EVOLUTION;
 		EVOLUTION = eVOLUTION;
+		DEX_ENTRY = dEX_ENTRY;
 	}
 	
 	// Future functionality here.
