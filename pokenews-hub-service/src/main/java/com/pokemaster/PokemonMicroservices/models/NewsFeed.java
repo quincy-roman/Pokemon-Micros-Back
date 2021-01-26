@@ -8,7 +8,6 @@
 package com.pokemaster.PokemonMicroservices.models;
 
 import java.time.LocalDate;
-import java.util.Arrays;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -32,7 +31,7 @@ public class NewsFeed{
     private String title; // main title of article
 
     @Column(name = "newsType")
-    private String type; // enum that represents the type of article -- testing with String
+    private NewsType type; // enum that represents the type of article -- testing with String
 
     @Column(name = "author")
     private String author; //person that wrote or provided source
@@ -44,7 +43,7 @@ public class NewsFeed{
     private String link; //web link to news article
 
     @Column(name = "newsKeywords")
-    private String[] keywords; //key words for easily search item on external browser
+    private String keywords; //key words for easily search item on external browser/ delimited by commas
     
     //CONSTRUCTORS
     
@@ -54,7 +53,7 @@ public class NewsFeed{
 	}
 
     //ALL BUT ID FIELD
-	public NewsFeed(String title, String type, String author, LocalDate dateWritten, String link, String[] keywords) {
+	public NewsFeed(String title, NewsType type, String author, LocalDate dateWritten, String link, String keywords) {
 		super();
 		this.title = title;
 		this.type = type;
@@ -65,8 +64,8 @@ public class NewsFeed{
 	}
 
 	//ALL ARGS
-	public NewsFeed(int newsId, String title, String type, String author, LocalDate dateWritten, String link,
-			String[] keywords) {
+	public NewsFeed(int newsId, String title, NewsType type, String author, LocalDate dateWritten, String link,
+			String keywords) {
 		super();
 		this.newsId = newsId;
 		this.title = title;
@@ -95,11 +94,11 @@ public class NewsFeed{
 		this.title = title;
 	}
 
-	public String getType() {
+	public NewsType getType() {
 		return type;
 	}
 
-	public void setType(String type) {
+	public void setType(NewsType type) {
 		this.type = type;
 	}
 
@@ -127,29 +126,21 @@ public class NewsFeed{
 		this.link = link;
 	}
 
-	public String[] getKeywords() {
+	public String getKeywords() {
 		return keywords;
 	}
 
-	public void setKeywords(String[] keywords) {
+	public void setKeywords(String keywords) {
 		this.keywords = keywords;
 	}
 
-	//TOSTRING METHOD
-	@Override
-	public String toString() {
-		return "NewsFeed [newsId=" + newsId + ", title=" + title + ", type=" + type + ", author=" + author
-				+ ", dateWritten=" + dateWritten + ", link=" + link + ", keywords=" + Arrays.toString(keywords) + "]";
-	}
-
-	//HASHCODE METHOD
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((author == null) ? 0 : author.hashCode());
 		result = prime * result + ((dateWritten == null) ? 0 : dateWritten.hashCode());
-		result = prime * result + Arrays.hashCode(keywords);
+		result = prime * result + ((keywords == null) ? 0 : keywords.hashCode());
 		result = prime * result + ((link == null) ? 0 : link.hashCode());
 		result = prime * result + newsId;
 		result = prime * result + ((title == null) ? 0 : title.hashCode());
@@ -157,7 +148,6 @@ public class NewsFeed{
 		return result;
 	}
 
-	//EQUALS METHOD
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -177,7 +167,10 @@ public class NewsFeed{
 				return false;
 		} else if (!dateWritten.equals(other.dateWritten))
 			return false;
-		if (!Arrays.equals(keywords, other.keywords))
+		if (keywords == null) {
+			if (other.keywords != null)
+				return false;
+		} else if (!keywords.equals(other.keywords))
 			return false;
 		if (link == null) {
 			if (other.link != null)
@@ -191,11 +184,14 @@ public class NewsFeed{
 				return false;
 		} else if (!title.equals(other.title))
 			return false;
-		if (type == null) {
-			if (other.type != null)
-				return false;
-		} else if (!type.equals(other.type))
+		if (type != other.type)
 			return false;
 		return true;
+	}
+
+	@Override
+	public String toString() {
+		return "NewsFeed [newsId=" + newsId + ", title=" + title + ", type=" + type + ", author=" + author
+				+ ", dateWritten=" + dateWritten + ", link=" + link + ", keywords=" + keywords + "]";
 	}
 }

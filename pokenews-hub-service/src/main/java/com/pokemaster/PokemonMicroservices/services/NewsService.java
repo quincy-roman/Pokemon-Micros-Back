@@ -1,6 +1,7 @@
 package com.pokemaster.PokemonMicroservices.services;
 
 import java.util.List;
+import java.util.Optional;
 
 import com.pokemaster.PokemonMicroservices.models.NewsFeed;
 
@@ -10,5 +11,5 @@ public interface NewsService {
 	
 	public List<NewsFeed> saveNewsArticles(List<NewsFeed> nList);
 	
-	public NewsFeed getNewsArticleById(int id);
+	public Optional<NewsFeed> getNewsArticleById(int id);
 }
