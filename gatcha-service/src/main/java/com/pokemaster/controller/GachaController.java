@@ -31,30 +31,6 @@ public class GachaController {
 	
 	private final int COST_PER_ROLL = 100;
 
-	/**
-	 * This method will most likely be removed/changed, but here's the idea:
-	 * It takes a ton of classes to make a Pokemon object from the PokeAPI, and contains a lot of unneeded info for {@link BasePokemon}
-	 * Instead we'll let a front end client (written in angular) convert the raw JSON data to our pokemonDTO model and send that back.
-	 * This way we don't need to manually create tons of  java classes everytime a pokemon is added to the database. 
-	 * @param pokemon
-	 * @return
-	 */
-	@PostMapping("/populate")
-	public ResponseEntity<ClientMessage<String>> populateDatabase(@RequestBody List<PokemonDTO> pokemon)
-	{
-		List<BasePokemon> convertedPoke = new ArrayList<>();
-		for(PokemonDTO p : pokemon)
-		{
-			convertedPoke.add(p.convertToBasePokemon());
-		}
-		
-		basePokeServ.saveAll(convertedPoke);
-		ResponseEntity<ClientMessage<String>> ret;
-		ClientMessage<String> m = new ClientMessage<String>("Data saved to database");
-		ret = ResponseEntity.ok(m);
-		return ret;
-		
-	}
 	
 	
 	/**
