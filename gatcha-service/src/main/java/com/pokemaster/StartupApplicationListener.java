@@ -30,21 +30,17 @@ public class StartupApplicationListener implements ApplicationListener<ContextRe
 	//gachaServ.populateBasePokemonDatabase();
 		
 		
-		List<BasePokemon> poke = repo.findAll();
-		for(BasePokemon p: poke)
+		
+		
+		List<BasePokemon> poke1 = gachaServ.rollGacha(10);
+		for(BasePokemon p: poke1)
 		{
 			log.info(p.toString());
 		}
-//		
-//		List<BasePokemon> poke1 = gachaServ.rollGacha(1);
-//		for(BasePokemon p: poke1)
-//		{
-//			log.info(p.toString());
-//		}
-//		List<BasePokemon> poke2 = gachaServ.rollGacha(1);
-//		for(BasePokemon p: poke2)
-//		{
-//			log.info(p.toString());
-//		}
+		List<BasePokemon> poke2 = gachaServ.rollGacha(6);
+		for(BasePokemon p: poke2)
+		{
+			log.info(p.toString());
+		}
 	}	
 }
