@@ -2,9 +2,12 @@ package com.pokemaster.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import lombok.Data;
@@ -25,10 +28,12 @@ public class OwnedPokemon {
 	@Column(name = "nickname")
 	private String nickname;	// A given nickname. Can be changed by the trainer.
 	
-	@Column(name = "ot", nullable = false)
+	@ManyToOne(fetch= FetchType.EAGER)
+	@JoinColumn(name = "ot", nullable = false)
 	private final Trainer OT;	// Original Trainer: the original owner of this Pokemon.
 	
-	@Column(name = "current_trainer", nullable = false)
+	@ManyToOne(fetch= FetchType.EAGER)
+	@JoinColumn(name = "current_trainer", nullable = false)
 	private Trainer currentTrainer;	// The current trainer of this Pokemon.
 	
 	@Column(name = "type_one", nullable = false)

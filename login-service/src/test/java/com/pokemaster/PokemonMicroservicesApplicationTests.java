@@ -1,4 +1,4 @@
-package com.pokemaster.PokemonMicroservices;
+package com.pokemaster;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

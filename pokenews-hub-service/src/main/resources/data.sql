@@ -1,0 +1,5 @@
+INSERT INTO NEWS (AUTHOR, DATE_WRITTEN, NEWS_KEYWORDS, NEWS_LINK, NEWS_TITLE, NEWS_TYPE) VALUES('A. Knox', '2021-01-18', 'breaking, late, newsworthy', 'http://google.com', 'Breaking News Report', 1);
+INSERT INTO NEWS (AUTHOR, DATE_WRITTEN, NEWS_KEYWORDS, NEWS_LINK, NEWS_TITLE, NEWS_TYPE) VALUES('B. Johnson', '2021-01-19', 'naughty, nice, santa', 'http://north-pole.com', 'Christmas Goodies and Baddies', 1);
+INSERT INTO NEWS (AUTHOR, DATE_WRITTEN, NEWS_KEYWORDS, NEWS_LINK, NEWS_TITLE, NEWS_TYPE) VALUES('C. Smith', '2021-01-20', 'latest, weather, tommorrow', 'http://weather.com', 'Forecast for 1/21/2021', 2);
+INSERT INTO NEWS (AUTHOR, DATE_WRITTEN, NEWS_KEYWORDS, NEWS_LINK, NEWS_TITLE, NEWS_TYPE) VALUES('D. Brown', '2021-01-22', 'cupid, love, short', 'http://vdayquotes.com', 'Roses are Red, Violets are Blue', 0);
+INSERT INTO NEWS (AUTHOR, DATE_WRITTEN, NEWS_KEYWORDS, NEWS_LINK, NEWS_TITLE, NEWS_TYPE) VALUES('E. Hart', '2021-01-25', 'notification, pokemon-microservices, urgent', 'http://localhost:4200/pokecenter/treatment/complete', 'Charmander has been cured!', 3);
