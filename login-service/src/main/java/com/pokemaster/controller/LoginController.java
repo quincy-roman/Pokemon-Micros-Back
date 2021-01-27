@@ -14,51 +14,46 @@ import java.net.URI;
 @CrossOrigin("http://localhost:4200")
 public class LoginController {
 
-  private static Logger log = Logger.getLogger(LoginController.class);
+	private static Logger log = Logger.getLogger(LoginController.class);
 
-  @Autowired LoginService loginService;
+	@Autowired
+	LoginService loginService;
 
-  /*
-   * Login as an existing trainer.
-   * Receives an email and password from the front end as Strings.
-   * Returns an OK status with the id of the user or a BAD_REQUEST
-   * if the Trainer is not found.
-   */
-  @PostMapping(path = "/login",consumes = MediaType.APPLICATION_JSON_VALUE)
-  public ResponseEntity<Integer> loginTrainer(@RequestBody Trainer trainer) {
-    System.err.println("BLARGH");
-    Integer id = loginService.checkCreds(trainer.getEmail(), trainer.getPassword());
-    if (id != null) {
-      return ResponseEntity.ok(id); // Might need to return the entire Trainer.
-    }
+	/*
+	 * Login as an existing trainer. Receives an email and password from the front
+	 * end as Strings. Returns an OK status with the id of the user or a BAD_REQUEST
+	 * if the Trainer is not found.
+	 */
+	@PostMapping(path = "/login", consumes = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Integer> loginTrainer(@RequestBody Trainer trainer) {
 
-    log.warn("Username or password incorrect.");
-    return ResponseEntity.badRequest().build();
-  }
+		Integer id = loginService.checkCreds(trainer.getEmail(), trainer.getPassword());
+		if (id != null) {
+			return ResponseEntity.ok(id); // Might need to return the entire Trainer.
+		}
 
-  /*
-   * Register a new Trainer.
-   * Takes a Trainer with all fields as a JSON object.
-   * Returns a CREATED status with the new URI or a
-   * BAD_REQUEST if the registration failed.
-   */
-  @PostMapping(
-      path = "/register",
-      consumes = {MediaType.APPLICATION_JSON_VALUE})
-  public ResponseEntity<Integer> registerTrainer(@RequestBody Trainer trainer) {
-    Integer id = loginService.register(trainer);
+		log.warn("Username or password incorrect.");
+		return ResponseEntity.badRequest().build();
 
-    if (id != null) {
-      return ResponseEntity.created(URI.create("/trainer/" + id)).build();
-    }
+	}
 
-    log.warn("Registration failed.");
-    return ResponseEntity.badRequest().build();
-  }
+	/*
+	 * Register a new Trainer. Takes a Trainer with all fields as a JSON object.
+	 * Returns a CREATED status with the new URI or a BAD_REQUEST if the
+	 * registration failed.
+	 */
+	@PostMapping(path = "/register", consumes = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Integer> registerTrainer(@RequestBody Trainer trainer) {
 
-  @GetMapping(path = "/test")
-  public ResponseEntity<Integer> test(){
-    System.err.println("BLARGH");
-    return ResponseEntity.ok(1);
-  }
+		Integer id = loginService.register(trainer);
+
+		if (id != null) {
+			return ResponseEntity.created(URI.create("/trainer/" + id)).build();
+		}
+
+		log.warn("Registration failed.");
+		return ResponseEntity.badRequest().build();
+
+	}
+
 }
