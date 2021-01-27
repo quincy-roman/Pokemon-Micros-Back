@@ -1,13 +1,18 @@
 package com.pokemaster.controller;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.pokemaster.model.ClientMessage;
+import com.pokemaster.dto.OwnedPokemonDTO;
+import com.pokemaster.dto.TrainerRollDTO;
 import com.pokemaster.model.OwnedPokemon;
 import com.pokemaster.model.Trainer;
 import com.pokemaster.service.BasePokemonService;
@@ -15,61 +20,53 @@ import com.pokemaster.service.GachaService;
 import com.pokemaster.service.TrainerService;
 
 @RestController()
-@CrossOrigin("localhost:4200")
+@RequestMapping("/gacha")
+@CrossOrigin("http://localhost:4200")
 public class GachaController {
-	
-	
+
 	@Autowired
 	BasePokemonService basePokeServ;
-	
+
 	@Autowired
 	GachaService gachaServ;
-	
+
 	@Autowired
 	TrainerService trainerServ;
-	
+
 	private final int COST_PER_ROLL = 100;
 
-	
-	
 	/**
-	 * Triggers the gacha rolling mechanic. Needs to be provided the trainer & the number of rolls that are requested.
+	 * Triggers the gacha rolling mechanic. Needs to be provided the trainer & the
+	 * number of rolls that are requested.
+	 * 
 	 * @param trainer
 	 * @param numOfRolls
 	 * @return
 	 */
 	@PostMapping("/roll")
-	public ResponseEntity<ClientMessage<OwnedPokemon[]>> rollGacha(@RequestBody int trainerId, @RequestBody int numOfRolls)
-	{
-		//Check if the trainer has enough money to do the rolls
-		Trainer trainer = trainerServ.findTrainerById(trainerId);
-		if(trainer.getPoke() >= (COST_PER_ROLL*numOfRolls))
-		{
-			//Subtract cost of rolls
-			trainer.setPoke(trainer.getPoke() - (COST_PER_ROLL * numOfRolls));
-			//Get the new pokemon
-			OwnedPokemon[] newPokes = (OwnedPokemon[]) gachaServ.assignGacha(trainer, numOfRolls).toArray();
+	public ResponseEntity<List<OwnedPokemonDTO>> rollGacha(@RequestBody TrainerRollDTO data)
+			 {
+		// Check if the trainer has enough money to do the rolls
+		Trainer trainer = trainerServ.findTrainerById(data.getTrainerId());
+		if (trainer.getPoke() >= (COST_PER_ROLL * data.getNumOfRolls())) {
+			// Subtract cost of rolls
+			trainer.setPoke(trainer.getPoke() - (COST_PER_ROLL * data.getNumOfRolls()));
+			// Get the new pokemon
+			List<OwnedPokemon> newPokes =  gachaServ.assignGacha(trainer, data.getNumOfRolls());
+			List<OwnedPokemonDTO> dtoPokes = new ArrayList<>();
+			for(int i = 0; i <newPokes.size();i++)
+			{
+				dtoPokes.add(OwnedPokemonDTO.convertToDTO(newPokes.get(i)));
+			}
+			// Return pokemon to the client
+			ResponseEntity<List<OwnedPokemonDTO>> ret;
 			
-			//Return pokemon to the client
-			ResponseEntity<ClientMessage<OwnedPokemon[]>> ret;
-			ClientMessage<OwnedPokemon[]> message = new ClientMessage<OwnedPokemon[]>(newPokes);
-			ret = ResponseEntity.ok(message);
+			ret = ResponseEntity.ok(dtoPokes);
 			return ret;
-		}
-		else {
+		} else {
 			return null;
 		}
-		
-		
-		
-		
-		
+
 	}
-	
-	
-	
-	
-	
-	
 
 }
