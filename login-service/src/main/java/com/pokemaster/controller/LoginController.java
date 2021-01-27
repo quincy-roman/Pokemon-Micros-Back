@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.net.URI;
 
 @RestController
-@CrossOrigin("localhost:4200")
+@CrossOrigin("http://localhost:4200")
 public class LoginController {
 
   private static Logger log = Logger.getLogger(LoginController.class);
@@ -27,7 +27,7 @@ public class LoginController {
   @PostMapping(path = "/login",consumes = MediaType.APPLICATION_JSON_VALUE)
   public ResponseEntity<Integer> loginTrainer(
       @RequestBody String email, @RequestBody String password) {
-
+    System.err.println("BLARGH");
     Integer id = loginService.checkCreds(email, password);
     if (id != null) {
       return ResponseEntity.ok(id); // Might need to return the entire Trainer.
