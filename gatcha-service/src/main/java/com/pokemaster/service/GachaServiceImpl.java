@@ -17,6 +17,7 @@ import com.pokemaster.dto.PokemonDTO;
 import com.pokemaster.model.BasePokemon;
 import com.pokemaster.model.OwnedPokemon;
 import com.pokemaster.model.Rarity;
+import com.pokemaster.model.Status;
 import com.pokemaster.model.Trainer;
 
 @Service("gachaService")
@@ -93,7 +94,7 @@ public class GachaServiceImpl implements GachaService {
 		for(BasePokemon p : rolledPoke) {
 			//Convert BasePokemon to a new owned Pokemon
 			ownedPoke.add(new OwnedPokemon(0,p.getSPECIES(),"",trainer,trainer,p.getTYPE_ONE(),p.getTYPE_TWO()
-					,p.getABILITY(),null,p.getMAX_HP(),p.getMAX_HP()
+					,p.getABILITY(),Status.NONE,p.getMAX_HP(),p.getMAX_HP()
 					,p.getATK(),p.getDEF(),p.getSPATK(),p.getSPDEF()
 					,p.getSPD(),p.getRarity(),false,false ));
 		}
