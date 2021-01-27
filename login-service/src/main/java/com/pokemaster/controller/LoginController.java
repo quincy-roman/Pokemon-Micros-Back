@@ -48,9 +48,10 @@ public class LoginController {
       consumes = {MediaType.APPLICATION_JSON_VALUE})
   public ResponseEntity<Integer> registerTrainer(@RequestBody Trainer trainer) {
     Integer id = loginService.register(trainer);
-
+    log.info(id);
     if (id != null) {
-      return ResponseEntity.created(URI.create("/trainer/" + id)).build();
+    	ResponseEntity<Integer> ret = ResponseEntity.ok(id);
+      return ret;//ResponseEntity.created(URI.create("/trainer/" + id)).build();
     }
 
     log.warn("Registration failed.");
