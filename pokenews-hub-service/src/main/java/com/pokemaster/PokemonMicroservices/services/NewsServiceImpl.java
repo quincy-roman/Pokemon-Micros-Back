@@ -1,6 +1,7 @@
 package com.pokemaster.PokemonMicroservices.services;
 
 import java.util.List;
+import java.util.Optional;
 
 import com.pokemaster.PokemonMicroservices.models.NewsFeed;
 
@@ -28,8 +29,8 @@ public class NewsServiceImpl implements NewsService {
 	}
 
 	@Override
-	public NewsFeed getNewsArticleById(int id) {
-		NewsFeed news = newsRepo.getOne(id);
+	public Optional<NewsFeed> getNewsArticleById(int id) {
+		Optional<NewsFeed> news = newsRepo.findById(id);
 		return news;
 	}
 

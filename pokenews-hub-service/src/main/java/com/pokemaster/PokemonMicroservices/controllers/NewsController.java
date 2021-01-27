@@ -1,6 +1,7 @@
 package com.pokemaster.PokemonMicroservices.controllers;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -29,8 +30,8 @@ public class NewsController {
 	}
 	
 	@GetMapping(path="/view/{newsId}", produces= {MediaType.APPLICATION_JSON_VALUE})
-	public ResponseEntity<NewsFeed> viewNewsArticle(@PathVariable("newsId") int newsId) {
-		NewsFeed newsArticle = newsService.getNewsArticleById(newsId);
+	public ResponseEntity<Optional<NewsFeed>> viewNewsArticle(@PathVariable("newsId") int newsId) {
+		Optional<NewsFeed> newsArticle = newsService.getNewsArticleById(newsId);
 		return ResponseEntity.ok(newsArticle);
 	}
 	
