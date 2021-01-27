@@ -25,10 +25,9 @@ public class LoginController {
    * if the Trainer is not found.
    */
   @PostMapping(path = "/login",consumes = MediaType.APPLICATION_JSON_VALUE)
-  public ResponseEntity<Integer> loginTrainer(
-      @RequestBody String email, @RequestBody String password) {
+  public ResponseEntity<Integer> loginTrainer(@RequestBody Trainer trainer) {
     System.err.println("BLARGH");
-    Integer id = loginService.checkCreds(email, password);
+    Integer id = loginService.checkCreds(trainer.getEmail(), trainer.getPassword());
     if (id != null) {
       return ResponseEntity.ok(id); // Might need to return the entire Trainer.
     }
