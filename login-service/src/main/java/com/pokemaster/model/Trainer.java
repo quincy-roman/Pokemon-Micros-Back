@@ -13,7 +13,8 @@ import lombok.RequiredArgsConstructor;
 
 @Entity
 @Table(name = "trainer")
-@Data@RequiredArgsConstructor
+@Data
+@RequiredArgsConstructor
 public class Trainer {
 	
 	@Id
