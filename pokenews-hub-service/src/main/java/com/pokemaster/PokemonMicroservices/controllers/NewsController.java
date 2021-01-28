@@ -1,8 +1,10 @@
 package com.pokemaster.PokemonMicroservices.controllers;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
+import org.apache.http.HttpStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -34,5 +36,12 @@ public class NewsController {
 		Optional<NewsFeed> newsArticle = newsService.getNewsArticleById(newsId);
 		return ResponseEntity.ok(newsArticle);
 	}
+	
+	@GetMapping(path="/view/feed", produces= {MediaType.APPLICATION_JSON_VALUE})
+    public ResponseEntity<String> viewRSSFeed() throws IOException {
+		System.out.println("Gathering RSS Feed data...");
+        String body = newsService.getFeed();
+        return ResponseEntity.status(HttpStatus.SC_OK).body(body);
+    }
 	
 }

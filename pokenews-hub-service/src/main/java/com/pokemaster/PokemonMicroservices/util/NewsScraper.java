@@ -1,23 +1,37 @@
 package com.pokemaster.PokemonMicroservices.util;
 
 import java.io.IOException;
-import java.util.Iterator;
+import java.time.LocalDate;
+import java.util.Arrays;
+import java.util.List;
 
 import org.jsoup.HttpStatusException;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.pokemaster.PokemonMicroservices.models.NewsFeed;
+import com.pokemaster.PokemonMicroservices.models.NewsFeedWrapper;
+import com.pokemaster.PokemonMicroservices.models.NewsType;
+import com.pokemaster.PokemonMicroservices.services.NewsService;
+import com.pokemaster.PokemonMicroservices.services.NewsServiceImpl;
 
 @Component
 public class NewsScraper {
+	
+	@Autowired
+	private NewsService service;
 
 	public NewsScraper() {
 		// TODO Auto-generated constructor stub
 	}
 
-	public void loadContents() throws IOException {
+	@SuppressWarnings("unused")
+	public String loadContents() throws IOException {
 
 		try {
 			// fetch the Pokemon.com webpage
@@ -75,15 +89,31 @@ public class NewsScraper {
 			}
 			
 			// NOTE: make this fetched data into JSON
+			int n = newsHeadlines.size();
+			List<NewsFeed> newsList = Arrays.asList(new NewsFeed[n]);;
+			System.out.println(newsList.size());
+			for (int i = 0; i < newsList.size(); i++) {
+				NewsFeed news = new NewsFeed();
+				//for POJO
+				news.setAuthor(authors.get(i).text());
+				news.setTitle(newsHeadlines.get(i).text());
+				news.setType(NewsType.GENERAL);
+				news.setDateWritten(LocalDate.now());
+				news.setLink(links.get(i).attr("abs:href"));
+				//call service to save the news article to database to get id
+				service.saveNewsArticle(news);
+				//for JSON return entity
+				ObjectMapper om = new ObjectMapper();
+				String[] monthDayArr = days[i].split("(?<=\\D)(?=\\d)");
+				System.out.println("Array size: " + monthDayArr.length);
+				NewsFeedWrapper obj = new NewsFeedWrapper(news, monthDayArr[0], monthDayArr[1], "2021");
+				String newsJSON = om.writeValueAsString(obj);
+				return newsJSON;
+			}
 			// NOTE: return formatted JSON to NewsController
 		} catch (HttpStatusException ex) {
 			System.out.println(ex);
 		}
-	}
-	
-	public static void main(String[] args) throws IOException {
-		NewsScraper n = new NewsScraper();
-		
-		n.loadContents();
+		return "";
 	}
 }
