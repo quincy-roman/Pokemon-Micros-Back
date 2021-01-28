@@ -32,7 +32,7 @@ public class NewsScraper {
 
 	@SuppressWarnings("unused")
 	public String loadContents() throws IOException {
-
+		String newsJSON = "";
 		try {
 			// fetch the Pokemon.com webpage
 			Document doc = Jsoup.connect("https://bulbagarden.net/").get();
@@ -93,6 +93,7 @@ public class NewsScraper {
 			List<NewsFeed> newsList = Arrays.asList(new NewsFeed[n]);;
 			System.out.println(newsList.size());
 			for (int i = 0; i < newsList.size(); i++) {
+				System.out.println("Beginning conversion...");
 				NewsFeed news = new NewsFeed();
 				//for POJO
 				news.setAuthor(authors.get(i).text());
@@ -101,15 +102,19 @@ public class NewsScraper {
 				news.setDateWritten(LocalDate.now());
 				news.setLink(links.get(i).attr("abs:href"));
 				//call service to save the news article to database to get id
-				service.saveNewsArticle(news);
+				System.out.println("Saving...");
+				NewsFeed saved = service.saveNewsArticle(news);
+				System.out.println("Now saved: " + saved);
 				//for JSON return entity
 				ObjectMapper om = new ObjectMapper();
 				String[] monthDayArr = days[i].split("(?<=\\D)(?=\\d)");
 				System.out.println("Array size: " + monthDayArr.length);
 				NewsFeedWrapper obj = new NewsFeedWrapper(news, monthDayArr[0], monthDayArr[1], "2021");
-				String newsJSON = om.writeValueAsString(obj);
-				return newsJSON;
+				System.out.println("Before: \n" + obj);
+				newsJSON += om.writeValueAsString(obj);
+				System.out.println("JSON: \n" + newsJSON);
 			}
+			return newsJSON;
 			// NOTE: return formatted JSON to NewsController
 		} catch (HttpStatusException ex) {
 			System.out.println(ex);

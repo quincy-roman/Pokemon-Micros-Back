@@ -17,6 +17,9 @@ public class NewsServiceImpl implements NewsService {
 	
 	@Autowired
 	NewsRepository newsRepo;
+	
+	@Autowired
+	NewsScraper n;
 
 	@Override
 	public List<NewsFeed> getAllNewsArticles() {
@@ -45,8 +48,6 @@ public class NewsServiceImpl implements NewsService {
 
 	@Override
 	public String getFeed() throws IOException {
-		// call scraper method
-		NewsScraper n = new NewsScraper();
 		return n.loadContents();
 	}
 
