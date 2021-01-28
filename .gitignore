@@ -7,5 +7,6 @@ pokemart-service/.settings/
 pokecenter-service/.settings/
 /.project/
 /.classpath/
+/.factorypath/
 login-service/.factorypath
 
