@@ -16,7 +16,7 @@ import com.pokemaster.PokemonMicroservices.util.RabbitMQReceiver;
 @SpringBootApplication
 public class PokemonMicroservicesApplication {
 
-	static final String topicExchangeName = "spring-boot-exchange";
+	public static final String topicExchangeName = "spring-boot-exchange";
 
 	static final String queueName = "spring-boot";
 
@@ -32,7 +32,7 @@ public class PokemonMicroservicesApplication {
 
 	@Bean
 	Binding binding(Queue queue, TopicExchange exchange) {
-		return BindingBuilder.bind(queue).to(exchange).with("foo.bar.#");
+		return BindingBuilder.bind(queue).to(exchange).with("pokemon.microservice.#");
 	}
 
 	@Bean
