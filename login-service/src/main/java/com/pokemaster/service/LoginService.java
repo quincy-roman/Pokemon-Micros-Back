@@ -25,5 +25,10 @@ public class LoginService {
 
 		return trainer.getTrainerId();
 	}
+	
+	public Trainer findTrainerById(int id)
+	{
+		return loginRepo.findById(id).get();
+	}
 
 }

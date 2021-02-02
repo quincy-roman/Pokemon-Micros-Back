@@ -1,14 +1,20 @@
 package com.pokemaster.controller;
 
-import com.pokemaster.model.Trainer;
-import com.pokemaster.service.LoginService;
+import javax.websocket.server.PathParam;
+
+import org.bouncycastle.asn1.ocsp.ResponseData;
 import org.jboss.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
 
-import java.net.URI;
+import com.pokemaster.model.Trainer;
+import com.pokemaster.service.LoginService;
 
 @RestController
 @CrossOrigin("http://localhost:4200")
@@ -62,4 +68,21 @@ public class LoginController {
     System.err.println("BLARGH");
     return ResponseEntity.ok(1);
   }
+  
+  @SuppressWarnings({ "rawtypes", "unchecked" })
+@GetMapping(path="/trainer/{id}")
+  public ResponseEntity<Trainer> getTrainer(@PathParam("id") int id)
+  {
+	  Trainer t =  loginService.findTrainerById(id);
+	  
+	  ResponseEntity<Trainer> rt = null;
+	  
+	  //Get trainer info, if no trainer is found (null) return a notFound status.
+	
+		  rt =ResponseEntity.ok(t);
+	
+	  
+	  return rt;
+  }
+  
 }
