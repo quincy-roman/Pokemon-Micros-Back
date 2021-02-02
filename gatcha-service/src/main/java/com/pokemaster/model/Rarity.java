@@ -8,6 +8,34 @@ public enum Rarity {
 	RARE,
 	EPIC,
 	LEGENDARY,
-	MYTHIC
+	MYTHIC;
 
+	
+	public static Rarity getRarityfromAvg(float average)
+	{
+		if(average <=54)
+		{
+			return Rarity.COMMON;
+		}
+		else if(average <=70)
+		{
+			return Rarity.UNCOMMON;
+		}
+		else if(average <=82)
+		{
+			return Rarity.RARE;
+		}
+		else if(average <= 95)
+		{
+			return Rarity.EPIC;
+		}
+		else if(average <= 99)
+		{
+			return Rarity.LEGENDARY;
+		}
+		else {
+			return Rarity.MYTHIC;
+		}
+	}
+	
 }

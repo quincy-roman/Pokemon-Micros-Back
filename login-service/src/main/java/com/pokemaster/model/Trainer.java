@@ -8,10 +8,13 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 import lombok.Data;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
 @Entity
 @Table(name = "trainer")
 @Data
+@RequiredArgsConstructor
 public class Trainer {
 	
 	@Id

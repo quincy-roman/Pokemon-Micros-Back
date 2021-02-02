@@ -40,6 +40,11 @@ public class Trainer {
 		this.poke = poke;
 	}
 	
+	public Trainer()
+	{
+		super();
+	}
+	
 	// Add more here.
 
 }
