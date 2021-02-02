@@ -39,6 +39,19 @@ public class Trainer {
 		this.password = password;
 		this.poke = poke;
 	}
+
+	public Trainer(int trainerId) {
+		super();
+		this.trainerId = trainerId;
+	}
+
+	public Trainer() {
+		super();
+	}
+	
+	
+	
+	
 	
 	// Add more here.
 

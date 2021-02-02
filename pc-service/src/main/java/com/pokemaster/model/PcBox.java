@@ -2,13 +2,19 @@ package com.pokemaster.model;
 
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import lombok.Data;
 
@@ -25,11 +31,12 @@ public class PcBox {
 	@Column(name = "name", nullable = false)
 	private String name;	// Name of the box.
 	
-	@Column(name = "owner", nullable = false)
+	@JoinColumn(name = "owner", nullable = false)
+	@ManyToOne
 	private Trainer owner;	// The trainer who owns the box.
 	
-	@Column(name = "pokemon")
-	@ManyToOne	// TODO: Fix
+	@JsonManagedReference
+	@OneToMany(mappedBy="pcBox")
 	private List<OwnedPokemon> pokemon;	// Pokemon within that box. TODO: Once it hits length 30, a new box is needed.
 
 	public PcBox(int boxId, String name, Trainer owner, List<OwnedPokemon> pokemon) {
@@ -39,6 +46,26 @@ public class PcBox {
 		this.owner = owner;
 		this.pokemon = pokemon;
 	}
+
+	public PcBox(String name, Trainer owner) {
+		super();
+		this.name = name;
+		this.owner = owner;
+		
+		
+	}
+
+	public PcBox() {
+		super();
+	}
+
+	public PcBox(String name, Trainer owner, List<OwnedPokemon> pokemon) {
+		super();
+		this.name = name;
+		this.owner = owner;
+		this.pokemon = pokemon;
+	}
+	
 	
 	/*
 	 * TODO: Add functionality.
