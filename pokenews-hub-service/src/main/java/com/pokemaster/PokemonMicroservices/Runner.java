@@ -29,10 +29,13 @@ public class Runner implements CommandLineRunner {
 	@Override
 	public void run(String... args) throws Exception {
 		System.out.println("Sending message...");
-	    rabbitTemplate.convertAndSend(PokemonMicroservicesApplication.topicExchangeName, "foo.bar.baz", "Hello from RabbitMQ!");
-	    receiver.getLatch().await(10000, TimeUnit.MILLISECONDS);
-	    rabbitTemplate.convertAndSend(PokemonMicroservicesApplication.topicExchangeName, "foo.bar.baz", "This is my first CUSTOM RabbitMQ message!");
-	    receiver.getLatch().await(5000, TimeUnit.MILLISECONDS);
+		if(args[0].equals("--spring.output.ansi.enabled=always")) {
+			rabbitTemplate.convertAndSend(PokemonMicroservicesApplication.topicExchangeName, "pokemon.microservice.messager", "Hello from RabbitMQ!");
+		    receiver.getLatch().await(10000, TimeUnit.MILLISECONDS);
+		}else {
+			rabbitTemplate.convertAndSend(PokemonMicroservicesApplication.topicExchangeName, "pokemon.microservice.messager", args[0]);
+			receiver.getLatch().await(10000, TimeUnit.MILLISECONDS);
+		}
 	}
 
 }
