@@ -105,12 +105,57 @@ public class LoginControllerTest {
 
 		// If the id is null, a 400 response is sent.
 		this.mockMvc.perform(post("/login")
-				.contentType("application/json")
-				.content(mapper.writeValueAsString(failure)))
-		.andDo(print())
-		.andExpect(status().isBadRequest());
+							 .contentType("application/json")
+							 .content(mapper.writeValueAsString(failure)))
+					.andDo(print())
+					.andExpect(status().isBadRequest());
 		
 	}
+	
+	/*
+	 * Test that registration returns the CREATED status
+	 * that it should if successful. Each trainer in the
+	 * trainers list will be tested.
+	 * The method should accept JSON data as a variable
+	 * and return the newly created URI.
+	 */
+	@Test
+	public void verifyRegistration() throws Exception{
+		
+		for(Trainer trainer : trainers) {
+			
+			when(loginService.register(trainer)).thenReturn(trainer.getTrainerId());
+			
+			this.mockMvc.perform(post("/login/register")
+					.contentType("application/json")
+					.content(mapper.writeValueAsBytes(trainer)))
+			.andDo(print())
+			.andExpect(status().isCreated());
+		}
+		
+	}
+	
+	/*
+	 * Test what happens if registration fails.
+	 * A null primary key from the service layer denotes
+	 * that the transaction was unsuccessful, the result
+	 * should be a BAD_REQUEST.
+	 * The method accepts JSON data as a variable.
+	 */
+	@Test
+	public void failRegistration() throws Exception{
+		
+		Trainer trainer = trainers.get(0);
+			
+		when(loginService.register(trainer)).thenReturn(null);
+		
+		this.mockMvc.perform(post("/login/register")
+				.contentType("application/json")
+				.content(mapper.writeValueAsBytes(trainer)))
+		.andDo(print())
+		.andExpect(status().isBadRequest());
+	}
+		
 
 }
 
