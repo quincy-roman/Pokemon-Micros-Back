@@ -63,12 +63,6 @@ public class LoginController {
 		return ResponseEntity.badRequest().build();
 	}
 
-	@GetMapping(path = "/test")
-	public ResponseEntity<Integer> test() {
-		System.err.println("BLARGH");
-		return ResponseEntity.ok(1);
-	}
-
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@GetMapping(path = "/trainer/{id}")
 	public ResponseEntity<Trainer> getTrainer(@PathVariable("id") int id) {
