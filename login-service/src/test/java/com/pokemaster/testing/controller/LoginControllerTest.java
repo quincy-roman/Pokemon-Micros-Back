@@ -5,8 +5,9 @@ import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -130,7 +131,8 @@ public class LoginControllerTest {
 					.contentType("application/json")
 					.content(mapper.writeValueAsBytes(trainer)))
 			.andDo(print())
-			.andExpect(status().isCreated());
+			.andExpect(status().isCreated())
+			.andExpect(redirectedUrl("/trainer/" + Integer.toString(trainer.getTrainerId())));
 		}
 		
 	}

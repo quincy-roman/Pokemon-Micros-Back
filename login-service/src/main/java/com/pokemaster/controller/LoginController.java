@@ -1,5 +1,7 @@
 package com.pokemaster.controller;
 
+import java.net.URI;
+
 import org.jboss.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -52,8 +54,9 @@ public class LoginController {
 		Integer id = loginService.register(trainer);
 		log.info(id);
 		if (id != null) {
-			ResponseEntity<Integer> ret = ResponseEntity.ok(id);
-			return ret;// ResponseEntity.created(URI.create("/trainer/" + id)).build();
+//			ResponseEntity<Integer> ret = ResponseEntity.ok(id);
+//			return ret;
+			return ResponseEntity.created(URI.create("/trainer/" + id)).build();
 		}
 
 		log.warn("Registration failed.");
