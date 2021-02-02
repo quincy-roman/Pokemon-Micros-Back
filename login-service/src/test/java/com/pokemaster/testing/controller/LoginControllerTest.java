@@ -5,12 +5,12 @@ import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -36,6 +36,20 @@ public class LoginControllerTest {
 	@Autowired
 	private LoginController loginController;
 	
+	private List<Trainer> trainers;
+	
+	/*
+	 * A basic list of trainers that are filled with
+	 * dummy data for testing purposes.
+	 */
+	@BeforeEach
+	public void init() {
+		trainers = new ArrayList<>();
+		trainers.add(new Trainer(1, "Test", "test@mail.com", "testpass", 500));
+		trainers.add(new Trainer(2, "Ash", "ash@mail.com", "pikachu", 10_000));
+		trainers.add(new Trainer(3, "Cynthia", "champ@sinnoh.net", "garchomp", 999_999_999));
+	}
+	
 	
 	/*
 	 * Ensure the application context is loaded.
@@ -46,31 +60,57 @@ public class LoginControllerTest {
 		assertThat(loginController).isNotNull();
 	}
 	
+	/*
+	 * Tests to show that the loginTrainer() function
+	 * operates as expected in the LoginController.
+	 * As this only tests the controller, the response
+	 * is coded as if the Service method was successful.
+	 */
 	@Test
 	public void verifyLogin() throws Exception{
 		
-		List<Trainer> trainers = new ArrayList<>();
+		int pos = 0;
 		
-		trainers.add(new Trainer(1, "Test", "test@mail.com", "testpass", 500));
-		trainers.add(new Trainer(2, "Ash", "ash@mail.com", "pikachu", 10_000));
-		trainers.add(new Trainer(3, "Cynthia", "champ@sinnoh.net", "garchomp", 999_999_999));
+		// Show that logging in with the established trainers works properly.
+		for(Trainer trainer : trainers) {
+			when(loginService.checkCreds(trainer.getEmail(), trainer.getPassword())).thenReturn(trainers.get(pos).getTrainerId());
+			
+			this.mockMvc.perform(post("/login")
+								.contentType("application/json")
+								.content(mapper.writeValueAsString(trainer)))
+						.andDo(print())
+						.andExpect(status().isOk())
+						.andExpect(content().contentType("application/json"))
+						.andExpect(content().string(mapper.writeValueAsString(trainer.getTrainerId())));
+			
+			pos++;
+		}		
+	}
+	
+	/*
+	 * Test with improper login credentials.
+	 * If a user is not found within the database,
+	 * the returned id should be null.
+	 * In the controller, a null id should return a 
+	 * 400 BAD_REQUEST status.
+	 */
+	@Test
+	public void failLogin() throws Exception{
 		
-		// Make a test trainer with just an email and password.
-		Trainer loginTrainer = new Trainer();
-		loginTrainer.setEmail("test@mail.com");
-		loginTrainer.setPassword("testpass");
-		
-		// Shows that when LoginService is called, what it should return.
-		when(loginService.checkCreds(loginTrainer.getEmail(), loginTrainer.getPassword())).thenReturn(trainers.get(0).getTrainerId());
-		
+		// Show that logging in with random information will not work.
+		Trainer failure = new Trainer(0, "fail", "", "", 0);
+
+		// For this service method, a null value is returned as the id of the returned trainer.
+		when(loginService.checkCreds(failure.getEmail(), failure.getPassword())).thenReturn(null);
+
+		// If the id is null, a 400 response is sent.
 		this.mockMvc.perform(post("/login")
-							 .contentType("application/json")
-							 .content(mapper.writeValueAsString(loginTrainer)))
-					.andDo(print())
-					.andExpect(status().isOk())
-					.andExpect(content().contentType("application/json"))
-					.andExpect(content().string("1"));
+				.contentType("application/json")
+				.content(mapper.writeValueAsString(failure)))
+		.andDo(print())
+		.andExpect(status().isBadRequest());
 		
 	}
 
 }
+
