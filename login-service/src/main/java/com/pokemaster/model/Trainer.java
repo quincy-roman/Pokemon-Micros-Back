@@ -7,14 +7,13 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "trainer")
-@Data
-@RequiredArgsConstructor
+@Data@NoArgsConstructor@AllArgsConstructor
 public class Trainer {
 	
 	@Id
@@ -34,9 +33,8 @@ public class Trainer {
 	@Column(name = "poke", nullable = false, columnDefinition = "numeric default 0")
 	private double poke;	// Currency for the application.
 
-	public Trainer(int trainerId, String name, String email, String password, double poke) {
+	public Trainer(String name, String email, String password, double poke) {
 		super();
-		this.trainerId = trainerId;
 		this.name = name;
 		this.email = email;
 		this.password = password;
