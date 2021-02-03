@@ -63,6 +63,12 @@ public class LoginController {
 		return ResponseEntity.badRequest().build();
 	}
 
+	/*
+	 * GET an existing Trainer by their unique ID.
+	 * The ID is taken from the URL as a PathVariable.
+	 * 404 NOT_FOUND is sent if the Trainer is not found,
+	 * 200 OK with the Trainer as JSON is sent if found.
+	 */
 	@GetMapping(path = "/trainer/{id}")
 	public ResponseEntity<Trainer> getTrainer(@PathVariable("id") int id) {
 		Trainer t = loginService.findTrainerById(id);
