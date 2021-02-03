@@ -63,7 +63,6 @@ public class LoginController {
 		return ResponseEntity.badRequest().build();
 	}
 
-//	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@GetMapping(path = "/trainer/{id}")
 	public ResponseEntity<Trainer> getTrainer(@PathVariable("id") int id) {
 		Trainer t = loginService.findTrainerById(id);
