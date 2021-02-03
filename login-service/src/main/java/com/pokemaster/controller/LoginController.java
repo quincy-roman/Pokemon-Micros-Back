@@ -63,18 +63,16 @@ public class LoginController {
 		return ResponseEntity.badRequest().build();
 	}
 
-	@SuppressWarnings({ "rawtypes", "unchecked" })
+//	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@GetMapping(path = "/trainer/{id}")
 	public ResponseEntity<Trainer> getTrainer(@PathVariable("id") int id) {
 		Trainer t = loginService.findTrainerById(id);
+		
+		if(t == null) {
+			return ResponseEntity.notFound().build();
+		}
 
-		ResponseEntity<Trainer> rt = null;
-
-		// Get trainer info, if no trainer is found (null) return a notFound status.
-
-		rt = ResponseEntity.ok(t);
-
-		return rt;
+		return ResponseEntity.ok(t);
 	}
 
 }

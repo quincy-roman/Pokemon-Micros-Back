@@ -2,10 +2,12 @@ package com.pokemaster.testing.controller;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import java.util.ArrayList;
@@ -66,6 +68,8 @@ public class LoginControllerTest {
 	 * operates as expected in the LoginController.
 	 * As this only tests the controller, the response
 	 * is coded as if the Service method was successful.
+	 * A 200 OK status is expected with the ID of the 
+	 * Trainer sent back as JSON.
 	 */
 	@Test
 	public void verifyLogin() throws Exception{
@@ -93,7 +97,8 @@ public class LoginControllerTest {
 	 * If a user is not found within the database,
 	 * the returned id should be null.
 	 * In the controller, a null id should return a 
-	 * 400 BAD_REQUEST status.
+	 * 400 BAD_REQUEST status with no JSON content.
+	 * The method accepts a Trainer object as JSON.
 	 */
 	@Test
 	public void failLogin() throws Exception{
@@ -109,7 +114,8 @@ public class LoginControllerTest {
 							 .contentType("application/json")
 							 .content(mapper.writeValueAsString(failure)))
 					.andDo(print())
-					.andExpect(status().isBadRequest());
+					.andExpect(status().isBadRequest())
+					.andExpect(jsonPath("$").doesNotExist());
 		
 	}
 	
@@ -117,8 +123,10 @@ public class LoginControllerTest {
 	 * Test that registration returns the CREATED status
 	 * that it should if successful. Each trainer in the
 	 * trainers list will be tested.
-	 * The method should accept JSON data as a variable
-	 * and return the newly created URI.
+	 * The method should accept JSON data as a variable.
+	 * A 201 CREATED should be expected with 
+	 * the newly created URI in the HTTP 
+	 * returned response header.
 	 */
 	@Test
 	public void verifyRegistration() throws Exception{
@@ -141,8 +149,9 @@ public class LoginControllerTest {
 	 * Test what happens if registration fails.
 	 * A null primary key from the service layer denotes
 	 * that the transaction was unsuccessful, the result
-	 * should be a BAD_REQUEST.
+	 * should be a 400 BAD_REQUEST.
 	 * The method accepts JSON data as a variable.
+	 * No JSON should be returned.
 	 */
 	@Test
 	public void failRegistration() throws Exception{
@@ -155,7 +164,52 @@ public class LoginControllerTest {
 				.contentType("application/json")
 				.content(mapper.writeValueAsBytes(trainer)))
 		.andDo(print())
-		.andExpect(status().isBadRequest());
+		.andExpect(status().isBadRequest())
+		.andExpect(jsonPath("$").doesNotExist());
+	}
+	
+	/*
+	 * Verify that getTrainer behaves as expected.
+	 * The ID of the desired Trainer is pulled as a
+	 * PathVariable from the URL and is then sent to
+	 * the service layer for retrieval.
+	 * The expected response for a successful call should
+	 * be the Trainer object sent as JSON with that same ID
+	 * with a 200 OK status.
+	 */
+	@Test
+	public void verifyGetTrainer() throws Exception{
+		
+		for(int id = 1; id < trainers.size(); id++) {
+			when(loginService.findTrainerById(id)).thenReturn(trainers.get(id-1));
+			
+			this.mockMvc.perform(get("/login/trainer/{id}", id))
+						.andDo(print())
+						.andExpect(status().isOk())
+						.andExpect(content().contentType("application/json"))
+						.andExpect(content().string(mapper.writeValueAsString(trainers.get(id-1))));
+		}
+		
+	}
+	
+	/*
+	 * If the Trainer is not found, a
+	 * 404 NOT_FOUND response is expected
+	 * with no content (JSON).
+	 * The method takes the ID from the URL
+	 * path as a variable.
+	 */
+	@Test
+	public void failGetTrainer() throws Exception{
+		
+		int id = 0;
+		
+		when(loginService.findTrainerById(id)).thenReturn(null);
+		
+		this.mockMvc.perform(get("/login/trainer/{id}", id))
+					.andDo(print())
+					.andExpect(status().isNotFound())
+					.andExpect(jsonPath("$").doesNotExist());
 	}
 		
 
