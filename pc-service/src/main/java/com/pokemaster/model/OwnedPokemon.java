@@ -2,10 +2,16 @@ package com.pokemaster.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import lombok.Data;
 
@@ -25,10 +31,12 @@ public class OwnedPokemon {
 	@Column(name = "nickname")
 	private String nickname;	// A given nickname. Can be changed by the trainer.
 	
-	@Column(name = "ot", nullable = false)
+	@JoinColumn(name = "ot", nullable = false)
+	@ManyToOne
 	private final Trainer OT;	// Original Trainer: the original owner of this Pokemon.
 	
-	@Column(name = "current_trainer", nullable = false)
+	@JoinColumn(name = "current_trainer", nullable = false)
+	@ManyToOne
 	private Trainer currentTrainer;	// The current trainer of this Pokemon.
 	
 	@Column(name = "type_one", nullable = false)
@@ -76,6 +84,16 @@ public class OwnedPokemon {
 	@Column(name = "in_battle", nullable = false, columnDefinition = "boolean default false")
 	private boolean inBattle;
 	
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumn(name="pcBox_id")
+	@JsonBackReference
+	private PcBox pcBox;
+	
+	@ManyToOne
+	@JoinColumn(name="team_id")
+	@JsonBackReference
+	private Team team;
+	
 //	@Column(name = "held_item")	Maybe in a later version.
 //	private Item heldItem;
 	
@@ -105,6 +123,55 @@ public class OwnedPokemon {
 		this.isFainted = isFainted;
 		this.inBattle = inBattle;
 	}
+
+public OwnedPokemon(int pokemonId, String sPECIES, String nickname, Trainer oT, Trainer currentTrainer, Type tYPE_ONE,
+		Type tYPE_TWO, String aBILITY, Status status, int mAX_HP, int currentHp, int aTK, int dEF, int sP_ATK,
+		int sP_DEF, int sPD, Rarity rarity, boolean isFainted, boolean inBattle, PcBox pcBox, Team team) {
+	super();
+	this.pokemonId = pokemonId;
+	SPECIES = sPECIES;
+	this.nickname = nickname;
+	OT = oT;
+	this.currentTrainer = currentTrainer;
+	TYPE_ONE = tYPE_ONE;
+	TYPE_TWO = tYPE_TWO;
+	ABILITY = aBILITY;
+	this.status = status;
+	MAX_HP = mAX_HP;
+	this.currentHp = currentHp;
+	ATK = aTK;
+	DEF = dEF;
+	SP_ATK = sP_ATK;
+	SP_DEF = sP_DEF;
+	SPD = sPD;
+	this.rarity = rarity;
+	this.isFainted = isFainted;
+	this.inBattle = inBattle;
+	this.pcBox = pcBox;
+	this.team = team;
+}
+
+public OwnedPokemon() {
+	this.SPECIES = "";
+	this.OT = new Trainer();
+	this.TYPE_ONE = null;
+	this.TYPE_TWO = null;
+	this.SP_ATK = 0;
+	this.SP_DEF = 0;
+	this.SPD = 0;
+	this.rarity = null;
+	this.MAX_HP = 0;
+	this.DEF = 0;
+	this.ATK = 0;
+	this.ABILITY = "";
+	
+}
+	
+	
+
+
+	
+	
 	
 	// Future functionality here.
 

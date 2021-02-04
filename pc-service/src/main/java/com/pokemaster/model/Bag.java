@@ -28,22 +28,23 @@ public class Bag {
 	@Column(name = "bag_id")
 	private int bagId;
 	
-	@Column(name = "trainer")
 	@OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name="trainer")
 	private Trainer trainer;
 
-	@ElementCollection
-	@MapKeyColumn(name = "item")
-	@Column(name = "frequency")
-	@CollectionTable(name = "bagged_items", joinColumns = @JoinColumn(name = "items"))	// May need work.
-	@OneToMany
-	private Map<Item, Integer> items;	// Key will be the item, frequency is the value.
+	//FIX HIBERNATE
+//	@ElementCollection
+//	@MapKeyColumn(name = "item")
+//	@Column(name = "frequency")
+//	@CollectionTable(name = "bagged_items", joinColumns = @JoinColumn(name = "items"))	// May need work.
+//	@OneToMany
+//	private Map<Item, Integer> items;	// Key will be the item, frequency is the value.
 
 	public Bag(int bagId, Trainer trainer, Map<Item, Integer> items) {
 		super();
 		this.bagId = bagId;
 		this.trainer = trainer;
-		this.items = items;
+//		this.items = items;
 	}
 	
 	// TODO
