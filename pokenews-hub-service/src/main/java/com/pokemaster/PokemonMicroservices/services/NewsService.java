@@ -17,4 +17,6 @@ public interface NewsService {
 	public NewsFeed saveNewsArticle(NewsFeed n);
 	
 	public Optional<NewsFeed> getNewsArticleById(int id);
+	
+	public void truncateNewsTable();
 }

@@ -11,6 +11,7 @@ import com.pokemaster.PokemonMicroservices.util.NewsScraper;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class NewsServiceImpl implements NewsService {
@@ -49,6 +50,12 @@ public class NewsServiceImpl implements NewsService {
 	@Override
 	public String getFeed() throws IOException {
 		return n.loadContents();
+	}
+
+	@Override
+	@Transactional
+	public void truncateNewsTable() {
+		newsRepo.truncateTable();
 	}
 
 }

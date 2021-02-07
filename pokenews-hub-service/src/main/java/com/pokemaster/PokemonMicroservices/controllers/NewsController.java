@@ -7,14 +7,19 @@ import org.apache.http.HttpStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.util.HtmlUtils;
 
 import com.pokemaster.PokemonMicroservices.Runner;
+import com.pokemaster.PokemonMicroservices.models.Greeting;
 import com.pokemaster.PokemonMicroservices.models.NewsFeed;
+import com.pokemaster.PokemonMicroservices.models.Notfication;
 import com.pokemaster.PokemonMicroservices.services.NewsService;
 
 @RestController
@@ -46,8 +51,18 @@ public class NewsController {
 	@GetMapping(path="/view/feed", produces= {MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<String> viewRSSFeed() throws Exception {
 		messager.run("Gathering RSS Feed data...");
+		//first remove existing news entries from DB
+		newsService.truncateNewsTable();
+		//then load new content into feed
         String body = newsService.getFeed();
         return ResponseEntity.status(HttpStatus.SC_OK).body(body);
+    }
+	
+	@MessageMapping("/hello")
+    @SendTo("/topic/greetings")
+    public Greeting greeting(Notfication message) throws Exception {
+        Thread.sleep(1000); // simulated delay
+        return new Greeting("Hello, " + HtmlUtils.htmlEscape(message.getName()) + "!");
     }
 	
 }
