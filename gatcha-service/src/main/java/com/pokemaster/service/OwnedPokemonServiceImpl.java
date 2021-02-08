@@ -11,11 +11,9 @@ import com.pokemaster.repository.OwnedPokemonRepository;
 @Service
 public class OwnedPokemonServiceImpl implements OwnedPokemonService {
 
-	
 	@Autowired
 	OwnedPokemonRepository repo;
-	
-	
+
 	@Override
 	public List<OwnedPokemon> saveAll(List<OwnedPokemon> all) {
 		// TODO Auto-generated method stub

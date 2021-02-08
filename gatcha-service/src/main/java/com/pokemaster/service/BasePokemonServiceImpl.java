@@ -14,8 +14,7 @@ public class BasePokemonServiceImpl implements BasePokemonService {
 
 	@Autowired
 	BasePokemonRepository repo;
-	
-	
+
 	@Override
 	public List<BasePokemon> saveAll(List<BasePokemon> all) {
 		// TODO Auto-generated method stub
@@ -40,10 +39,8 @@ public class BasePokemonServiceImpl implements BasePokemonService {
 		return repo.findByRarity(rarity);
 	}
 
-	public BasePokemon findById(int id)
-	{
+	public BasePokemon findById(int id) {
 		return repo.findById(id).get();
 	}
-
 
 }

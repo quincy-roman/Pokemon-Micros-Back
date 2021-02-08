@@ -38,7 +38,7 @@ public class PokemonDTO {
 	private final boolean IS_EVOLUTION; // If a pokemon is an evolved form or not. Affects if it can be rolled in drop
 										// table.
 
-	private final String EVOLUTION; //Form from which the pokemon evolved from.
+	private final String EVOLUTION; // Form from which the pokemon evolved from.
 
 	private final String DEX_ENTRY;
 
@@ -86,13 +86,12 @@ public class PokemonDTO {
 		}
 		DEX_ENTRY = dEX_ENTRY;
 	}
-	
+
 	@JsonCreator
-	public PokemonDTO(@JsonProperty("national_id") int national_id,
-			@JsonProperty("species") String species,@JsonProperty("stats") int[] stats, 
-			@JsonProperty("type_one") String type_one,@JsonProperty("type_two") String type_two,
-			@JsonProperty("ability") String ability,@JsonProperty("pre-evolution") String preevolution,
-			@JsonProperty("dex entry") String dex_entry) {
+	public PokemonDTO(@JsonProperty("national_id") int national_id, @JsonProperty("species") String species,
+			@JsonProperty("stats") int[] stats, @JsonProperty("type_one") String type_one,
+			@JsonProperty("type_two") String type_two, @JsonProperty("ability") String ability,
+			@JsonProperty("pre-evolution") String preevolution, @JsonProperty("dex entry") String dex_entry) {
 		super();
 		this.national_id = national_id;
 		SPECIES = species;
@@ -115,14 +114,12 @@ public class PokemonDTO {
 		}
 		DEX_ENTRY = dex_entry;
 	}
-	
-	
 
 	public BasePokemon convertToBasePokemon() {
 		float avg = (MAX_HP + ATK + DEF + SPATK + SPDEF + SPD) / 6;
 
 		return new BasePokemon(national_id, SPECIES, Type.getType(TYPE_ONE), Type.getType(TYPE_TWO), ABILITY, MAX_HP,
-				ATK, DEF, SPATK, SPDEF, SPD, Rarity.getRarityfromAvg(avg), IS_EVOLUTION, EVOLUTION,DEX_ENTRY);
+				ATK, DEF, SPATK, SPDEF, SPD, Rarity.getRarityfromAvg(avg), IS_EVOLUTION, EVOLUTION, DEX_ENTRY);
 
 	}
 

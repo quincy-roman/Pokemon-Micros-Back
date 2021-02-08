@@ -45,8 +45,7 @@ public class GachaController {
 	 * @return
 	 */
 	@PostMapping("/roll")
-	public ResponseEntity<List<OwnedPokemonDTO>> rollGacha(@RequestBody TrainerRollDTO data)
-			 {
+	public ResponseEntity<List<OwnedPokemonDTO>> rollGacha(@RequestBody TrainerRollDTO data) {
 		// Check if the trainer has enough money to do the rolls
 		Trainer trainer = trainerServ.findTrainerById(data.getTrainerId());
 		if (trainer.getPoke() >= (COST_PER_ROLL * data.getNumOfRolls())) {
@@ -54,15 +53,14 @@ public class GachaController {
 			trainer.setPoke(trainer.getPoke() - (COST_PER_ROLL * data.getNumOfRolls()));
 			// Get the new pokemon
 			List<BasePokemon> newPokes = gachaServ.rollGacha(data.getNumOfRolls());
-			List<OwnedPokemon> ownedPokes =gachaServ.assignGacha(trainer, newPokes);
+			List<OwnedPokemon> ownedPokes = gachaServ.assignGacha(trainer, newPokes);
 			List<OwnedPokemonDTO> dtoPokes = new ArrayList<>();
-			for(int i = 0; i <newPokes.size();i++)
-			{
+			for (int i = 0; i < newPokes.size(); i++) {
 				dtoPokes.add(OwnedPokemonDTO.convertToDTO(ownedPokes.get(i)));
 			}
 			// Return pokemon to the client
 			ResponseEntity<List<OwnedPokemonDTO>> ret;
-			
+
 			ret = ResponseEntity.ok(dtoPokes);
 			return ret;
 		} else {
@@ -70,33 +68,26 @@ public class GachaController {
 		}
 
 	}
-	
+
 	@PostMapping("/starters")
-	public ResponseEntity<List<OwnedPokemonDTO>> generateStarterPokemon(@RequestBody TrainerRollDTO id)
-	{
+	public ResponseEntity<List<OwnedPokemonDTO>> generateStarterPokemon(@RequestBody TrainerRollDTO id) {
 		Trainer trainer = trainerServ.findTrainerById(id.getTrainerId());
-		
+
 		List<BasePokemon> newPokes = gachaServ.rollStarterGacha(trainer);
-		List<OwnedPokemon> ownedPokes =gachaServ.assignGacha(trainer, newPokes);
+		List<OwnedPokemon> ownedPokes = gachaServ.assignGacha(trainer, newPokes);
 		List<OwnedPokemonDTO> dtoPokes = new ArrayList<>();
-		for(int i = 0; i <newPokes.size();i++)
-		{
+		for (int i = 0; i < newPokes.size(); i++) {
 			dtoPokes.add(OwnedPokemonDTO.convertToDTO(ownedPokes.get(i)));
 		}
 		// Return pokemon to the client
 		ResponseEntity<List<OwnedPokemonDTO>> ret;
-		if(dtoPokes.size() ==6)
-		{
+		if (dtoPokes.size() == 6) {
 			ret = ResponseEntity.ok(dtoPokes);
-		}
-		else {
-			ret = ResponseEntity.badRequest().build();	
+		} else {
+			ret = ResponseEntity.badRequest().build();
 		}
 		return ret;
 
-		
 	}
-	
-	
 
 }

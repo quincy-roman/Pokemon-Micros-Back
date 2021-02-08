@@ -49,15 +49,15 @@ public class OwnedPokemonDTO implements Serializable {
 
 	private boolean inBattle;
 
-	public static OwnedPokemonDTO convertToDTO(OwnedPokemon pokemon)
-	{
-		return new OwnedPokemonDTO(pokemon.getPokemonId(),pokemon.getSPECIES(),pokemon.getNickname(),pokemon.getOT().getTrainerId(),
-				pokemon.getCurrentTrainer().getTrainerId(),pokemon.getTYPE_ONE().toString(),pokemon.getTYPE_TWO().toString(),
-				pokemon.getABILITY(),pokemon.getLEVEL(),pokemon.getStatus().toString(),pokemon.getMAX_HP(),pokemon.getCurrentHp(),
-				pokemon.getATK(),pokemon.getDEF(),pokemon.getSP_ATK(),pokemon.getSP_DEF(),pokemon.getSPD(),pokemon.getRarity().toString()
-				,pokemon.isFainted(),pokemon.isInBattle());
+	public static OwnedPokemonDTO convertToDTO(OwnedPokemon pokemon) {
+		return new OwnedPokemonDTO(pokemon.getPokemonId(), pokemon.getSPECIES(), pokemon.getNickname(),
+				pokemon.getOT().getTrainerId(), pokemon.getCurrentTrainer().getTrainerId(),
+				pokemon.getTYPE_ONE().toString(), pokemon.getTYPE_TWO().toString(), pokemon.getABILITY(),
+				pokemon.getLEVEL(), pokemon.getStatus().toString(), pokemon.getMAX_HP(), pokemon.getCurrentHp(),
+				pokemon.getATK(), pokemon.getDEF(), pokemon.getSP_ATK(), pokemon.getSP_DEF(), pokemon.getSPD(),
+				pokemon.getRarity().toString(), pokemon.isFainted(), pokemon.isInBattle());
 	}
-	
+
 	public OwnedPokemonDTO(int pokemonId, String species, String nickname, int oT, int currentTrainer, String typeOne,
 			String typeTwo, String ability, int level, String status, int maxHp, int currentHp, int atk, int def,
 			int spAtk, int spDef, int spd, String rarity, boolean isFainted, boolean inBattle) {

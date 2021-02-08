@@ -13,7 +13,7 @@ public class TrainerServiceImpl implements TrainerService {
 
 	@Autowired
 	TrainerRepository trainerRepo;
-	
+
 	@Override
 	public List<Trainer> findAll() {
 		// TODO Auto-generated method stub
@@ -31,7 +31,5 @@ public class TrainerServiceImpl implements TrainerService {
 		// TODO Auto-generated method stub
 		return trainerRepo.save(trainer).getTrainerId();
 	}
-
-	
 
 }
