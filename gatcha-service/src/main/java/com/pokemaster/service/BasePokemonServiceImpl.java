@@ -40,6 +40,10 @@ public class BasePokemonServiceImpl implements BasePokemonService {
 		return repo.findByRarity(rarity);
 	}
 
+	public BasePokemon findById(int id)
+	{
+		return repo.findById(id).get();
+	}
 
 
 }

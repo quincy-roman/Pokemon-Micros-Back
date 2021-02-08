@@ -14,4 +14,6 @@ public interface BasePokemonService {
 	public List<BasePokemon> findAll();
 	
 	public List<BasePokemon> findWithRarity(Rarity rarity);
+	
+	public BasePokemon findById(int id);
 }

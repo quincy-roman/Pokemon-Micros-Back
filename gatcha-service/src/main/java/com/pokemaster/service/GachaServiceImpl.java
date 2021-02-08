@@ -17,6 +17,7 @@ import com.pokemaster.dto.PokemonDTO;
 import com.pokemaster.model.BasePokemon;
 import com.pokemaster.model.OwnedPokemon;
 import com.pokemaster.model.Rarity;
+import com.pokemaster.model.StarterPokemon;
 import com.pokemaster.model.Status;
 import com.pokemaster.model.Trainer;
 
@@ -87,11 +88,10 @@ public class GachaServiceImpl implements GachaService {
 
 	
 	@Override
-	public List<OwnedPokemon> assignGacha(Trainer trainer, int numOfRolls) {
+	public List<OwnedPokemon> assignGacha(Trainer trainer, List<BasePokemon> basePoke) {
 		// TODO Auto-generated method stub		
-		List<BasePokemon> rolledPoke = rollGacha(numOfRolls);
 		List<OwnedPokemon> ownedPoke = new ArrayList<>();
-		for(BasePokemon p : rolledPoke) {
+		for(BasePokemon p : basePoke) {
 			//Convert BasePokemon to a new owned Pokemon
 			ownedPoke.add(new OwnedPokemon(0,p.getSPECIES(),"",trainer,trainer,p.getTYPE_ONE(),p.getTYPE_TWO()
 					,p.getABILITY(),Status.NONE,p.getMAX_HP(),p.getMAX_HP()
@@ -103,9 +103,25 @@ public class GachaServiceImpl implements GachaService {
 	}
 
 	@Override
-	public List<BasePokemon> rollStarterGacha() {
-		// TODO Auto-generated method stub
-		return null;
+	public List<BasePokemon> rollStarterGacha(Trainer trainer) {
+		
+		//generates 6 starting pokemon with 1 being a starter pokemon, and the remaining 5 being rare or lower.
+		List<BasePokemon> poke = new ArrayList<>();
+		//Get random starter from starter enum
+		poke.add(basePokeServ.findById(StarterPokemon.randomStarter().getPokeId()));
+		
+		for(int i =0; i < 2; i++)
+		{
+			poke.add(getRandomPokemon(Rarity.UNCOMMON));
+		}
+		for(int i =0; i < 2; i++)
+		{
+			poke.add(getRandomPokemon(Rarity.COMMON));
+		}
+		poke.add(rollGacha(1).get(0));
+		
+		
+		return poke;
 	}
 
 	@Override

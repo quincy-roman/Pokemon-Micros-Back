@@ -19,9 +19,9 @@ public interface GachaService {
 	
 	public List<BasePokemon> rollGacha(int numOfRolls); //Generic "random" rolls
 	
-	public List<OwnedPokemon> assignGacha(Trainer trainer, int numOfRolls); //Assigns pokemons to the correct trainer and saves them
+	public List<OwnedPokemon> assignGacha(Trainer trainer, List<BasePokemon> basePoke); //Assigns pokemons to the correct trainer and saves them
 	
-	public List<BasePokemon> rollStarterGacha(); //Rolls the starting 6 pokemon a trainer gets when they first register
+	public List<BasePokemon> rollStarterGacha(Trainer trainer); //Rolls the starting 6 pokemon a trainer gets when they first register
 	
 	
 	//Evaluates the roll based on drop rates and returns a specified rarity.

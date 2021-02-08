@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.pokemaster.dto.OwnedPokemonDTO;
 import com.pokemaster.dto.TrainerRollDTO;
+import com.pokemaster.model.BasePokemon;
 import com.pokemaster.model.OwnedPokemon;
 import com.pokemaster.model.Trainer;
 import com.pokemaster.service.BasePokemonService;
@@ -52,11 +53,12 @@ public class GachaController {
 			// Subtract cost of rolls
 			trainer.setPoke(trainer.getPoke() - (COST_PER_ROLL * data.getNumOfRolls()));
 			// Get the new pokemon
-			List<OwnedPokemon> newPokes =  gachaServ.assignGacha(trainer, data.getNumOfRolls());
+			List<BasePokemon> newPokes = gachaServ.rollGacha(data.getNumOfRolls());
+			List<OwnedPokemon> ownedPokes =gachaServ.assignGacha(trainer, newPokes);
 			List<OwnedPokemonDTO> dtoPokes = new ArrayList<>();
 			for(int i = 0; i <newPokes.size();i++)
 			{
-				dtoPokes.add(OwnedPokemonDTO.convertToDTO(newPokes.get(i)));
+				dtoPokes.add(OwnedPokemonDTO.convertToDTO(ownedPokes.get(i)));
 			}
 			// Return pokemon to the client
 			ResponseEntity<List<OwnedPokemonDTO>> ret;
@@ -68,5 +70,33 @@ public class GachaController {
 		}
 
 	}
+	
+	@PostMapping("/starters")
+	public ResponseEntity<List<OwnedPokemonDTO>> generateStarterPokemon(@RequestBody TrainerRollDTO id)
+	{
+		Trainer trainer = trainerServ.findTrainerById(id.getTrainerId());
+		
+		List<BasePokemon> newPokes = gachaServ.rollStarterGacha(trainer);
+		List<OwnedPokemon> ownedPokes =gachaServ.assignGacha(trainer, newPokes);
+		List<OwnedPokemonDTO> dtoPokes = new ArrayList<>();
+		for(int i = 0; i <newPokes.size();i++)
+		{
+			dtoPokes.add(OwnedPokemonDTO.convertToDTO(ownedPokes.get(i)));
+		}
+		// Return pokemon to the client
+		ResponseEntity<List<OwnedPokemonDTO>> ret;
+		if(dtoPokes.size() ==6)
+		{
+			ret = ResponseEntity.ok(dtoPokes);
+		}
+		else {
+			ret = ResponseEntity.badRequest().build();	
+		}
+		return ret;
+
+		
+	}
+	
+	
 
 }
