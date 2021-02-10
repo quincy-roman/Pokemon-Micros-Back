@@ -7,6 +7,5 @@ public class TrainerRollDTO {
 
 	int trainerId;
 	int numOfRolls;
-	
-	
+
 }

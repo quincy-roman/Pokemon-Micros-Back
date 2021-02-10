@@ -17,6 +17,7 @@ import com.pokemaster.dto.PokemonDTO;
 import com.pokemaster.model.BasePokemon;
 import com.pokemaster.model.OwnedPokemon;
 import com.pokemaster.model.Rarity;
+import com.pokemaster.model.StarterPokemon;
 import com.pokemaster.model.Status;
 import com.pokemaster.model.Trainer;
 
@@ -27,13 +28,13 @@ public class GachaServiceImpl implements GachaService {
 
 	@Autowired
 	BasePokemonService basePokeServ;
-	
+
 	@Autowired
 	OwnedPokemonService ownedServ;
 
 	/***
 	 * Returns a list of {@link BasePokemon} that is comprised of random pokemon
-	 * Length of the list is the same as the numOfRolls 
+	 * Length of the list is the same as the numOfRolls
 	 */
 	@Override
 	public List<BasePokemon> rollGacha(int numOfRolls) {
@@ -77,83 +78,85 @@ public class GachaServiceImpl implements GachaService {
 	 */
 	@Override
 	public BasePokemon getRandomPokemon(Rarity rarity) {
-		//Get all pokemon
+		// Get all pokemon
 		List<BasePokemon> foundPokemon = basePokeServ.findWithRarity(rarity);
-		log.info("Size of foundPokemon is: " +foundPokemon.size());
+		log.info("Size of foundPokemon is: " + foundPokemon.size());
 		int rand = (int) (Math.random() * (foundPokemon.size() - 1));
 		log.info("Random value is: " + rand);
 		return foundPokemon.get(rand);
 	}
 
-	
 	@Override
-	public List<OwnedPokemon> assignGacha(Trainer trainer, int numOfRolls) {
-		// TODO Auto-generated method stub		
-		List<BasePokemon> rolledPoke = rollGacha(numOfRolls);
+	public List<OwnedPokemon> assignGacha(Trainer trainer, List<BasePokemon> basePoke) {
+		// TODO Auto-generated method stub
 		List<OwnedPokemon> ownedPoke = new ArrayList<>();
-		for(BasePokemon p : rolledPoke) {
-			//Convert BasePokemon to a new owned Pokemon
-			ownedPoke.add(new OwnedPokemon(0,p.getSPECIES(),"",trainer,trainer,p.getTYPE_ONE(),p.getTYPE_TWO()
-					,p.getABILITY(),Status.NONE,p.getMAX_HP(),p.getMAX_HP()
-					,p.getATK(),p.getDEF(),p.getSPATK(),p.getSPDEF()
-					,p.getSPD(),p.getRarity(),false,false ));
+		for (BasePokemon p : basePoke) {
+			// Convert BasePokemon to a new owned Pokemon
+			ownedPoke.add(new OwnedPokemon(0, p.getSPECIES(), "", trainer, trainer, p.getTYPE_ONE(), p.getTYPE_TWO(),
+					p.getABILITY(), Status.NONE, p.getMAX_HP(), p.getMAX_HP(), p.getATK(), p.getDEF(), p.getSPATK(),
+					p.getSPDEF(), p.getSPD(), p.getRarity(), false, false));
 		}
-		
+
 		return ownedServ.saveAll(ownedPoke);
 	}
 
 	@Override
-	public List<BasePokemon> rollStarterGacha() {
-		// TODO Auto-generated method stub
-		return null;
+	public List<BasePokemon> rollStarterGacha(Trainer trainer) {
+
+		// generates 6 starting pokemon with 1 being a starter pokemon, and the
+		// remaining 5 being rare or lower.
+		List<BasePokemon> poke = new ArrayList<>();
+		// Get random starter from starter enum
+		poke.add(basePokeServ.findById(StarterPokemon.randomStarter().getPokeId()));
+
+		for (int i = 0; i < 2; i++) {
+			poke.add(getRandomPokemon(Rarity.UNCOMMON));
+		}
+		for (int i = 0; i < 2; i++) {
+			poke.add(getRandomPokemon(Rarity.COMMON));
+		}
+		poke.add(rollGacha(1).get(0));
+
+		return poke;
 	}
 
 	@Override
 	public void populateBasePokemonDatabase() {
-		//Open file for reading
+		// Open file for reading
 		File file = new File(this.getClass().getClassLoader().getResource("Poke.txt").getFile());
 		BufferedReader br = null;
-		try
-		{
-			//Read file, and store to string builder
+		try {
+			// Read file, and store to string builder
 			br = new BufferedReader(new FileReader(file));
 			String line;
 			StringBuilder sb = new StringBuilder();
 			List<PokemonDTO> list = new ArrayList<>();
-			while((line = br.readLine()) !=null)
-			{
-				//Appends for debugging.
+			while ((line = br.readLine()) != null) {
+				// Appends for debugging.
 				sb.append(line);
-				
-				ObjectMapper mapper = new ObjectMapper();
-				list.add(mapper.readValue(line,PokemonDTO.class)) ;
 
-				
-				
+				ObjectMapper mapper = new ObjectMapper();
+				list.add(mapper.readValue(line, PokemonDTO.class));
+
 			}
 			log.info(sb.toString());
-			//Parse string builder with Jackson
-			
+			// Parse string builder with Jackson
+
 			List<BasePokemon> list2 = new ArrayList<>();
-			for(PokemonDTO poke : list)
-			{
+			for (PokemonDTO poke : list) {
 				list2.add(poke.convertToBasePokemon());
 			}
-			
+
 			basePokeServ.saveAll(list2);
-			
+
 			log.info("Saved all pokemon to DB");
-			
-		}catch(IOException ioE)
-		{
+
+		} catch (IOException ioE) {
 			ioE.printStackTrace();
-		}catch(Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
-		}finally
-		{
-			if(br !=null)
-			{
+		} finally {
+			if (br != null) {
 				try {
 					br.close();
 				} catch (IOException e) {
@@ -161,19 +164,9 @@ public class GachaServiceImpl implements GachaService {
 					e.printStackTrace();
 				}
 			}
-			
-			
-			
+
 		}
-		
-		
-		
-		
-		
+
 	}
 
-
-
-
-	
 }

@@ -18,40 +18,24 @@ import com.pokemaster.service.GachaService;
 import com.pokemaster.service.TrainerService;
 
 @Component
-public class StartupApplicationListener implements ApplicationListener<ContextRefreshedEvent>{
-	
+public class StartupApplicationListener implements ApplicationListener<ContextRefreshedEvent> {
+
 	@Autowired
 	GachaService gachaServ;
 	@Autowired
 	BasePokemonRepository repo;
-	
+
 	@Autowired
 	TrainerService tServ;
-	
+
 	static Logger log = Logger.getLogger(StartupApplicationListener.class);
+
 	@Override
 	public void onApplicationEvent(ContextRefreshedEvent event) {
-		
-		
-//		Trainer t = tServ.findTrainerById(1);
-//		t.setPoke(100000);
-//		tServ.saveTrainer(t);
-			
-	//USED TO AUTOPOPULATE DATABASE WITH POKEMON. USE ONLY WHEN THE DATABASE IS PURGED OR BAD THINGS WILL HAPPEN!!!!!!
+
+		// USED TO AUTOPOPULATE DATABASE WITH POKEMON. USE ONLY WHEN THE DATABASE IS
+		// PURGED OR BAD THINGS WILL HAPPEN!!!!!!
 //	gachaServ.populateBasePokemonDatabase();
-		
-		//Trainer t = new Trainer(0, "Warlockben", "test@test.com", "123",500);
-		//tServ.saveTrainer(t);
-		
-//		List<BasePokemon> poke1 = gachaServ.rollGacha(10);
-//		for(BasePokemon p: poke1)
-//		{
-//			log.info(p.toString());
-//		}
-//		List<BasePokemon> poke2 = gachaServ.rollGacha(6);
-//		for(BasePokemon p: poke2)
-//		{
-//			log.info(p.toString());
-//		}
-	}	
+
+	}
 }
