@@ -12,7 +12,7 @@ public interface NewsRepository extends JpaRepository<NewsFeed, Integer>{
 
 	@Modifying
 	@Query(
-            value = "truncate table NEWS",
+            value = "truncate table NEWS RESTART IDENTITY",
             nativeQuery = true
     )
 	public void truncateTable();
