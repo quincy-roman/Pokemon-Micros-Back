@@ -6,10 +6,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -20,6 +22,7 @@ import com.pokemaster.service.PcBoxService;
 
 @RestController("pcBoxController")
 @RequestMapping("/pc")
+@CrossOrigin
 public class PcBoxController {
 
 	@Autowired
@@ -37,15 +40,21 @@ public class PcBoxController {
 		return ResponseEntity.ok(boxes);
 	}
 	
-	@PutMapping("/addPokemon")
-	public ResponseEntity<String> addPokemonToBox(@RequestParam int boxId, @RequestParam int pokemonId){
+	@PutMapping(path="/addPokemon/{pokemonId}")
+	public ResponseEntity addPokemonToBox(@RequestBody int boxId, @PathVariable int pokemonId){
+		System.out.println("remove pokemon method called");
+		System.out.println(boxId);
+		System.out.println(pokemonId);
 		boxService.addToBox(boxId, pokemonId);
-		return ResponseEntity.status(HttpStatus.OK).body("Update complete");
+		return ResponseEntity.ok().build();
 	}
 	
-	@PutMapping("/removePokemon")
-	public ResponseEntity<String> transferPokemonToTeam(@RequestParam int teamId, @RequestParam int pokemonId){
+	@PutMapping(path="/removePokemon/{pokemonId}")
+	public ResponseEntity transferPokemonToTeam(@RequestBody int teamId, @PathVariable int pokemonId){
+		System.out.println("remove pokemon method called");
+		System.out.println(teamId);
+		System.out.println(pokemonId);
 		boxService.removeFromBox(teamId, pokemonId);
-		return ResponseEntity.status(HttpStatus.OK).body("Update complete");
+		return ResponseEntity.ok().build();
 	}
 }
