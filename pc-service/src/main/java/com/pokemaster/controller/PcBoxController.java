@@ -17,8 +17,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.pokemaster.model.PcBox;
+import com.pokemaster.model.Team;
 import com.pokemaster.model.Trainer;
+import com.pokemaster.repository.TeamRepository;
 import com.pokemaster.service.PcBoxService;
+import com.pokemaster.service.TeamService;
 
 @RestController("pcBoxController")
 @RequestMapping("/pc")
@@ -27,6 +30,19 @@ public class PcBoxController {
 
 	@Autowired
 	PcBoxService boxService;
+	
+	@Autowired
+	TeamService teamService;
+	
+	@Autowired
+	TeamRepository teamRepository;
+	
+	@GetMapping(path="/team/{trainerId}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Team> retrieveTeamById(@PathVariable int trainerId){
+		Team currentTeam = teamService.findByTrainerId(trainerId);
+//		Team currentTeam = teamRepository.findById(teamId).get();
+		return ResponseEntity.ok(currentTeam);
+	}
 	
 	@PostMapping("/create")
 	public ResponseEntity<PcBox> createNewBox(@RequestParam int trainerId, @RequestParam String boxName){
@@ -55,6 +71,12 @@ public class PcBoxController {
 		System.out.println(teamId);
 		System.out.println(pokemonId);
 		boxService.removeFromBox(teamId, pokemonId);
+		return ResponseEntity.ok().build();
+	}
+	
+	@PutMapping(path="/updateBoxes/{trainerId}")
+	public ResponseEntity updateBoxes(@PathVariable int trainerId) {
+		boxService.checkUnboxedPokemon(trainerId);
 		return ResponseEntity.ok().build();
 	}
 }

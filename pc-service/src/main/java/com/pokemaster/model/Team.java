@@ -39,9 +39,15 @@ public class Team {
 		this.trainer = trainer;
 		this.pokemon = pokemon;
 	}
-
+	
+	
 	public Team() {
 		super();
+	}
+
+	public Team(Trainer trainer) {
+		super();
+		this.trainer = trainer;
 	}
 	
 	
